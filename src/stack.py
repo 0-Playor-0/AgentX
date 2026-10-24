@@ -66,21 +66,23 @@ def load_members(root, tr_ids, te_ids):
 def filter_members(raw, y, cfg, rng):
     drop = {k: 0 for k in ("invalid", "stack_level", "auc_hi", "lb_gap", "ks", "dup")}
     drop["es_flagged"] = 0
-    lb_known, es_seen, keep, rows = 0, 0, [], []
+    lb_known, keep, rows = 0, [], []
     excl = re.compile(cfg["exclude_regex"], re.I)
-    es = [re.compile(p, re.I) for p in cfg.get("es_on_scored_fold") or []]
+    es = {a: ([re.compile(p, re.I) for p in r["match"]], [re.compile(p, re.I) for p in r.get("exempt") or []])
+          for a, r in (cfg.get("es_authors") or {}).items()}
+    es_author = lambda n: next((a for a, (mt, ex) in es.items()
+                                if any(p.search(n) for p in mt) and not any(p.search(n) for p in ex)), "")
     lb_map = [(re.compile(k, re.I), v) for k, v in (cfg.get("lb") or {}).items()]
     sub = rng.choice(len(y), min(len(y), 200_000), replace=False)
     for name, (o, t) in raw.items():
-        row = dict(name=name, auc=np.nan, ks=np.nan, es=any(p.search(name) for p in es))
+        row = dict(name=name, auc=np.nan, ks=np.nan, es_author=es_author(name), status="")
         rows.append(row)
         o, t = np.asarray(o, np.float64).ravel(), np.asarray(t, np.float64).ravel()
         if excl.search(name.split(":", 1)[1]):
             row["status"] = "stack_level"; continue
         if len(o) != len(y) or not np.isfinite(o).all() or not np.isfinite(t).all() or len(np.unique(o[sub[:5000]])) < 50:
             row["status"] = "invalid"; continue
-        es_seen += row["es"]
-        if row["es"] and cfg.get("exclude_es"):
+        if row["es_author"] and cfg.get("exclude_es"):
             row["status"] = "es_flagged"; continue
         o, t = _logit_pair(o, t)
         row["auc"] = auc = roc_auc_score(y, o)
@@ -106,7 +108,7 @@ def filter_members(raw, y, cfg, rng):
     for row in rows:
         if row["status"] in drop:
             drop[row["status"]] += 1
-    return kept, drop, lb_known, es_seen, pd.DataFrame(rows)
+    return kept, drop, lb_known, pd.DataFrame(rows)
 
 
 def _pct(a):
@@ -171,18 +173,21 @@ def main(cfg, exp, smoke=False):
     tr_ids, y, te_ids = labels()
     f = folds(y)
     key = hashlib.md5(json.dumps({k: cfg.get(k) for k in ("exclude_regex", "auc_max", "lb_gap_max", "ks_max",
-                      "dedupe_corr", "lb", "exclude_es", "es_on_scored_fold")}, sort_keys=True, default=str).encode()).hexdigest()[:8]
+                      "dedupe_corr", "lb", "exclude_es", "es_authors")}, sort_keys=True, default=str).encode()).hexdigest()[:8]
     cache = ART / "cache" / f"{exp}_{key}.npz"
     if cache.exists():
         z = np.load(cache, allow_pickle=False)
         X, XT, names, log, kslog = z["X"], z["XT"], list(z["names"]), str(z["log"]), str(z["kslog"])
     else:
         raw, skipped = load_members(DATA / cfg["oof_dir"], tr_ids, te_ids)
-        kept, drop, lb_known, es_seen, rows = filter_members(raw, y, cfg, rng)
+        kept, drop, lb_known, rows = filter_members(raw, y, cfg, rng)
+        valid = rows[~rows.status.isin(["invalid", "stack_level"])]
+        by_author = valid[valid.es_author != ""].groupby("es_author").size()
+        es_txt = " ".join(f"{a}={n}" for a, n in by_author.items()) or "none"
         names = [r[1] for r in kept]
         X, XT = np.stack([r[2] for r in kept], 1), np.stack([r[3] for r in kept], 1)
         log = (f"loaded={len(raw)} kept={len(kept)} dropped " + " ".join(f"{k}={v}" for k, v in drop.items())
-               + f" | es_flagged_found={es_seen} exclude_es={bool(cfg.get('exclude_es'))} lb_known={lb_known}/{len(raw)}"
+               + f" | es_flagged_by_author: {es_txt} (total {int(by_author.sum())}) exclude_es={bool(cfg.get('exclude_es'))} lb_known={lb_known}/{len(raw)}"
                + f" no_test_file={len(skipped)} best_single={kept[0][0]:.5f}")
         ks = rows["ks"].dropna()
         kslog = (f"KS over {len(ks)} scored members: median={ks.median():.4f} p95={ks.quantile(.95):.4f} "
