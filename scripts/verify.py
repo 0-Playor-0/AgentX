@@ -27,7 +27,7 @@ def oof_te(keys, a=20):
     return roc_auc_score(y, p)
 
 fd = tr["Flight Distance"]; vc = fd.value_counts()
-rat = [c for c in tr.columns if tr[c].dtype != object and c not in ("id", T, "Age", "Flight Distance")
+rat = [c for c in tr.columns if pd.api.types.is_numeric_dtype(tr[c]) and c not in ("id", T, "Age", "Flight Distance")
        and "Delay" not in c]
 print(f"shape train={tr.shape} test={te.shape} pos={y.mean():.4f} na={tr.isna().sum().sum()} cols_match_orig="
       f"{set(tr.columns) - {'id'} <= set(o.columns)}")
