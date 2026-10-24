@@ -19,7 +19,7 @@ exclude_es: false
 es_authors:
   dariushafshar:        # golem manifest.csv `early_stopping`: b,c,d,f,g,o "none"; e = inner 10% split of training fold
     match: ['^s6e10-golem-oof-library:', ':gl_']
-    exempt: ['^s6e10-golem-oof-library:[bcdefgo]$', '^s6e10-golem-oof-library:wide\.[bcdefgo]_', ':gl_[bcdefg]$']
+    exempt: ['^s6e10-golem-oof-library:([bcdefg]|o_\w+)$', '^s6e10-golem-oof-library:wide\.[bcdefgo]_', ':gl_[bcdefg]$']
   megayak:              # README: trees early-stopped on their validation fold; "RealMLPs train a fixed number of epochs"
     match: ['^s6e10-oof-library:', ':mg_']
     exempt: ['realmlp']
