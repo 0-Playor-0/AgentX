@@ -1,8 +1,9 @@
-"""Tokenless fallback for the slim bundle: download the public OOF libraries anonymously with kagglehub into
-$S6_DATA/public_oof/<dataset-name>/ and check every file against the md5s pinned in public_oof/MD5SUMS.
-Exits non-zero (-> use the full bundle) if any download fails or any pinned file is missing or changed upstream.
+"""Tokenless OOF fetch for the slim bundle: download the public OOF libraries anonymously with kagglehub into
+$S6_DATA/public_oof/<dataset-name>/; a source that fails anonymously is taken from $DRV/extra_<source>.zip (or a
+known alias such as s6e10_golem.zip) if present. Every file is checked against the md5s pinned in public_oof/MD5SUMS.
+Exits non-zero if a source is unavailable or any pinned file is missing or changed upstream.
 Without a pinned list, it records the md5s of what it downloaded to $S6_ART/public_oof_MD5SUMS instead."""
-import hashlib, os, shutil, sys
+import hashlib, os, shutil, sys, zipfile
 from pathlib import Path
 
 SLUGS = ["cdeotte/s6e10-124-public-oof-and-test-predictions", "cdeotte/s6e10-tfm-oof-and-test-predictions",
@@ -23,14 +24,31 @@ try:
     import kagglehub
 except ImportError:
     sys.exit("[anon] kagglehub not installed")
-failed = []
+EXTRA_DIR = Path(os.environ.get("S6_EXTRA_DIR", os.environ.get("DRV", ".")))
+ALIASES = {"s6e10-golem-oof-library": "s6e10_golem.zip"}   # its whole-dataset zip fails on Kaggle's side
+
+
+def extra_zip(name):
+    """Hand-made zip of one library (files at the zip root): extra_<source>.zip, or a known alias."""
+    for z in (EXTRA_DIR / f"extra_{name}.zip", EXTRA_DIR / ALIASES.get(name, f"extra_{name}.zip")):
+        if z.exists():
+            return z
+
+
+failed, via = [], {}
 for s in SLUGS:
     name = s.split("/")[1]
     try:
         src = Path(kagglehub.dataset_download(s))
         shutil.copytree(src, out / name, dirs_exist_ok=True)
-    except Exception as e:                                   # noqa: BLE001 - any failure means "use full bundle"
-        failed.append(f"{name}: {type(e).__name__}")
+        via[name] = "anon"
+    except Exception as e:                                   # noqa: BLE001 - any failure -> try the extra zip
+        z = extra_zip(name)
+        if z:
+            zipfile.ZipFile(z).extractall(out / name)
+            via[name] = z.name
+        else:
+            failed.append(f"{name}: {type(e).__name__} -> upload {ALIASES.get(name, f'extra_{name}.zip')} to {EXTRA_DIR}")
 
 
 def md5(p):
@@ -49,6 +67,6 @@ missing = [p for p in pins if not (out / p).exists()]
 changed = [p for p in pins if (out / p).exists() and md5(out / p) != pins[p]]
 ok = not (failed or missing or changed)
 print(f"[anon] sources={len(SLUGS) - len(failed)}/{len(SLUGS)} pinned_files={len(pins) or 'none (md5s recorded to S6_ART/public_oof_MD5SUMS)'} missing={len(missing)} "
-      f"changed_upstream={len(changed)} -> {'OK' if ok else 'FAIL, use full bundle'}"
-      + (f" | failed: {failed[:3]}" if failed else "") + (f" | e.g. {(missing + changed)[:3]}" if missing or changed else ""))
+      f"changed_upstream={len(changed)} -> {'OK' if ok else 'FAIL'}"
+      + " | via: " + " ".join(f"{k.replace('s6e10-', '')}={v}" for k, v in via.items() if v != "anon") + (f" | failed: {failed}" if failed else "") + (f" | e.g. {(missing + changed)[:3]}" if missing or changed else ""))
 sys.exit(0 if ok else 1)
