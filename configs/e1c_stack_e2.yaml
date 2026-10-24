@@ -1,0 +1,2 @@
+base: e1b_stack     # set to e1a_stack if E1a is judged honest (E1a - E1b <= 0.00005)
+extra: [e2_lgb]

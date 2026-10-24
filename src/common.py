@@ -19,7 +19,7 @@ def labels():
     return tr["id"].to_numpy(), y, te["id"].to_numpy()
 
 
-def folds(y):
+def folds(y, save=True):
     """SKF(5, shuffle, 42): the split used by the public OOF libraries. Cached in folds.npy."""
     p = ART / "folds.npy"
     if p.exists():
@@ -29,8 +29,9 @@ def folds(y):
     f = np.zeros(len(y), np.int8)
     for k, (_, va) in enumerate(StratifiedKFold(5, shuffle=True, random_state=42).split(np.zeros(len(y)), y)):
         f[va] = k
-    p.parent.mkdir(parents=True, exist_ok=True)
-    np.save(p, f)
+    if save:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        np.save(p, f)
     return f
 
 

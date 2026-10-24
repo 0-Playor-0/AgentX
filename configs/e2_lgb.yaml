@@ -1,0 +1,14 @@
+module: lgb_e2
+groups: [base, route, teacher, te]
+te_smooth: 20
+rounds: 6000
+es_rounds: 200            # on a 5% split of the outer-train rows, never the scored fold
+teacher_rounds: 600
+params:
+  learning_rate: 0.04
+  num_leaves: 63
+  min_data_in_leaf: 100
+  feature_fraction: 0.7
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 5.0
