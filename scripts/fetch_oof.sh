@@ -9,5 +9,5 @@ for d in cdeotte/s6e10-124-public-oof-and-test-predictions cdeotte/s6e10-tfm-oof
   mkdir -p "$OUT/$n"; kaggle datasets download "$d" -p "$OUT/$n" -q --unzip && touch "$OUT/$n/.done"
   kaggle datasets metadata "$d" -p "$OUT/$n" >/dev/null 2>&1 || true
 done
-( cd "$OUT" && find . -name '*.npy' -o -name '*.npz' -o -name '*.parquet' -o -name '*.csv' | sort | xargs md5sum ) > "$OUT/MD5SUMS"
+( cd "$OUT" && find . \( -name "*.npy" -o -name "*.npz" -o -name "*.parquet" -o -name "*.csv" \) -type f | sort | while read -r f; do if command -v md5sum >/dev/null; then md5sum "$f"; else echo "$(md5 -q "$f")  $f"; fi; done ) > "$OUT/MD5SUMS"
 echo "fetched $(ls -d "$OUT"/*/ | wc -l) sources, $(wc -l < "$OUT/MD5SUMS") files (md5s in MD5SUMS)"
