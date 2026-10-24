@@ -27,7 +27,7 @@ pd.DataFrame({"id": np.arange(n, n + nt), "pred": t}).to_csv(P / "c/x_test.csv",
 (P / "d").mkdir(); o1, t1 = mem(1.0); o2, t2 = mem(1.1)                                        # wide parquet
 pd.DataFrame({"id": np.arange(n), "fold": 0, "satisfaction": y, "p1": o1, "p2": np.log(o2 / (1 - o2))}).to_parquet(P / "d/oof_predictions.parquet")
 pd.DataFrame({"id": np.arange(n, n + nt), "p1": t1, "p2": np.log(t2 / (1 - t2))}).to_parquet(P / "d/test_predictions.parquet")
-grid = "inner_folds: 3\nC_grid: [0.001, 0.1]\nk_grid: [3, 6]\nrank_k_grid: [2, 4]\nes_on_scored_fold: ['^a:m5$']\n"
+grid = "inner_folds: 3\nC_grid: [0.001, 0.1]\nk_grid: [3, 6]\nrank_k_grid: [2, 4]\nes_authors: {tester: {match: ['^a:m'], exempt: ['^a:m[0-3]$']}}\n"
 Path("configs/e1_smoke_a.yaml").write_text("base: e1_stack\nexclude_es: false\n" + grid)
 Path("configs/e1_smoke_b.yaml").write_text("base: e1_stack\nexclude_es: true\n" + grid)
 env = dict(os.environ, S6_DATA=str(D), S6_ART=str(A))
@@ -36,7 +36,8 @@ for exp in ("e1_smoke_a", "e1_smoke_a", "e1_smoke_b"):        # second run of _a
     assert r.returncode == 0, r.stderr[-2000:]
     print(r.stdout.strip())
 st = pd.read_csv(A / "e1_smoke_b_members.csv").set_index("name")["status"]
-assert st["a:m5"] == "es_flagged" and pd.read_csv(A / "e1_smoke_a_members.csv").set_index("name").at["a:m5", "status"] == "kept"
+assert (st[["a:m4", "a:m5"]] == "es_flagged").all() and (st[["a:m1", "a:m2"]] == "kept").all()   # author-wide flag minus exempt
+assert pd.read_csv(A / "e1_smoke_a_members.csv").set_index("name").at["a:m5", "status"] == "kept"
 exp = pd.read_csv(A / "experiments.csv")
 print(f"smoke OK: experiments.csv rows={len(exp)} es flag excluded only in _b; oof={np.load(A / 'oof/e1_smoke_a.npy').shape}")
 for c in ("a", "b"): Path(f"configs/e1_smoke_{c}.yaml").unlink()

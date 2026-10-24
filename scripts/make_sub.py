@@ -7,18 +7,19 @@ from pathlib import Path
 import numpy as np, pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from common import ART, DATA
+from common import ART, DATA, read_log
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--exp"); ap.add_argument("--pick-e1", action="store_true")
 ap.add_argument("--es-margin", type=float, default=0.00005)
 a = ap.parse_args()
-log = pd.read_csv(ART / "experiments.csv").drop_duplicates("exp", keep="last").set_index("exp")
+log = read_log()
 
 if a.pick_e1:
     ca, cb = log.at["e1a_stack", "cv_mean"], log.at["e1b_stack", "cv_mean"]
     a.exp = "e1b_stack" if ca - cb > a.es_margin else "e1a_stack"
-    print(f"[pick] E1a={ca:.6f} E1b={cb:.6f} diff={ca - cb:+.6f} margin={a.es_margin} -> honest={a.exp}")
+    (ART / "e1_pick.txt").write_text(a.exp + "\n")             # read by cell 7 (run.py --base-from)
+    print(f"[pick] E1a={ca:.6f} E1b={cb:.6f} diff={ca - cb:+.6f} margin={a.es_margin} -> honest={a.exp} (saved to e1_pick.txt)")
 
 p = np.load(ART / "test" / f"{a.exp}.npy").astype(np.float64)
 ss = pd.read_csv(DATA / "comp/sample_submission.csv")

@@ -36,14 +36,27 @@ def folds(y, save=True):
 
 
 def log_exp(exp, features, model, per_fold, notes):
+    """Append to experiments.csv and also write log_rows/<exp>.csv. Two Colab sessions can share the Drive
+    folder: experiments.csv may lose a row to a sync race, log_rows/ cannot (one file per exp)."""
+    row = [exp, features, model, f"{np.mean(per_fold):.6f}", f"{np.std(per_fold):.6f}",
+           json.dumps([round(float(a), 6) for a in per_fold]), notes]
+    head = ["exp", "features", "model", "cv_mean", "cv_std", "per_fold", "notes"]
+    (ART / "log_rows").mkdir(parents=True, exist_ok=True)
+    with open(ART / "log_rows" / f"{exp}.csv", "w", newline="") as fh:
+        csv.writer(fh).writerows([head, row])
     p = ART / "experiments.csv"
     new = not p.exists()
     with open(p, "a", newline="") as fh:
         w = csv.writer(fh)
         if new:
-            w.writerow(["exp", "features", "model", "cv_mean", "cv_std", "per_fold", "notes"])
-        w.writerow([exp, features, model, f"{np.mean(per_fold):.6f}", f"{np.std(per_fold):.6f}",
-                    json.dumps([round(float(a), 6) for a in per_fold]), notes])
+            w.writerow(head)
+        w.writerow(row)
+
+
+def read_log():
+    """Latest row per exp, from log_rows/ (race-free)."""
+    import pandas as pd
+    return pd.concat([pd.read_csv(f) for f in sorted((ART / "log_rows").glob("*.csv"))]).set_index("exp")
 
 
 def save_preds(exp, oof, test):
