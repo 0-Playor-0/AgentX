@@ -1,0 +1,22 @@
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.7, "e": 0.8}  mean 40.55  worst -0.16 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.7, "e": 1.0}  mean 40.80  worst +0.99 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.7, "e": 1.25}  mean 41.08  worst +1.72 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.8, "e": 0.8}  mean 40.75  worst +0.66 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.8, "e": 1.0}  mean 41.09  worst +1.71 (junk_lines)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.8, "e": 1.25}  mean 40.87  worst -0.40 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.9, "e": 0.8}  mean 40.99  worst +1.45 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.9, "e": 1.0}  mean 41.12  worst +0.56 (step_conceder)
+{"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.9, "e": 1.25}  mean 40.33  worst -3.29 (step_conceder)
+
+baseline by group: {'cooperative': 65.4, 'hard_bargainer': 39.4, 'manipulator': 35.9, 'step_conceder': 50.9, 'early_walker': 42.5, 'never_leaver': 21.9, 'injector': 39.3, 'junk_lines': 34.5, 'bundle_demander': 35.6, 'below_floor': -1.2}
+argmax mean: {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.9, "e": 1.0} 41.12 worst +0.56 (step_conceder)
+top by robustness (centre of flat region):
+  robust  40.75  mean  40.99  worst +1.45 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.9, "e": 0.8}
+  robust   -inf  mean  41.12  worst +0.56 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.9, "e": 1.0}
+  robust   -inf  mean  41.09  worst +1.71 (junk_lines)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.8, "e": 1.0}
+  robust   -inf  mean  41.08  worst +1.72 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.7, "e": 1.25}
+  robust   -inf  mean  40.87  worst -0.40 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.8, "e": 1.25}
+  robust   -inf  mean  40.80  worst +0.99 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.7, "e": 1.0}
+  robust   -inf  mean  40.75  worst +0.66 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.8, "e": 0.8}
+  robust   -inf  mean  40.55  worst -0.16 (step_conceder)  {"recip": 0, "final_k": 0.5, "walk_gap": 0.05, "stall_step": 0.05, "fast_speed": 0.015, "fast_R": 4, "x0": 0.7, "e": 0.8}
+admissible (>= baseline on every group): 6/9
