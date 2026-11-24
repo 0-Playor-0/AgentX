@@ -37,7 +37,11 @@ def buyer_set(name):
     if name.startswith("heldout2-"):
         model = {"oss": "openai/gpt-oss-120b", "gem": "gemini-3-flash-preview"}.get(name.split("-", 1)[1],
                                                                                  name.split("-", 1)[1])
-        return llm_buyers.make_set(llm_buyers.HELD2, model=model, thinking=True, suffix="@" + model)
+        # thinking on only for llm_manipulator; off for the other three (gpt-oss minimum: reasoning_effort low)
+        out = {}
+        for k, cls in llm_buyers.HELD2.items():
+            out.update(llm_buyers.make_set({k: cls}, model=model, thinking=(k == "llm_manipulator"), suffix="@" + model))
+        return out
     if name.startswith("heldout-"):            # held-out styles + a few tuning styles on a second model
         model = {"oss": "openai/gpt-oss-120b", "gem": "gemini-3-flash-preview"}.get(name.split("-", 1)[1],
                                                                                  name.split("-", 1)[1])
