@@ -86,7 +86,10 @@ def main():
     ap.add_argument("--out", help="write rows+transcripts (jsonl)")
     ap.add_argument("--sellable-only", action="store_true",
                     help="exactly n-per negotiations per persona where something requested is in stock")
+    ap.add_argument("--table", help="print the table from an existing --out file (partial runs too) and exit")
     args = ap.parse_args()
+    if args.table:
+        return from_log(args.table)
     store, policy = load_store(), load_policy()
     classes = buyer_set(args.set)
     if args.sellable_only:
@@ -99,24 +102,52 @@ def main():
     else:
         scen = kit_buyers.make_scenarios(store, policy, args.n_per * len(classes), args.seed, classes)
     t0 = time.time()
-    ours = play(seller_with(json.loads(args.params)), scen, classes, store, policy, args.workers)
-    base = ([], []) if args.no_baseline else \
-        play(load_class(str(ROOT / "kit/example_seller.py"), "Seller"), scen, classes, store, policy, args.workers)
+    ours_cls = seller_with(json.loads(args.params))
+    base_cls = load_class(str(ROOT / "kit/example_seller.py"), "Seller")
+    ours, base = ([], []), ([], [])
+    fh = open(args.out, "w", encoding="utf-8") if args.out else None
+    # Incremental: play `workers` scenarios at a time (ours, then baseline) and write/print as we go, so a killed
+    # run still leaves its finished negotiations. Each negotiation is independent, so results match a single run.
+    for k in range(0, len(scen), args.workers):
+        chunk = scen[k:k + args.workers]
+        for who, cls, acc in (("ours", ours_cls, ours), ("base", base_cls, base)):
+            if who == "base" and args.no_baseline:
+                continue
+            rows, trans = play(cls, chunk, classes, store, policy, args.workers)
+            acc[0].extend(rows)
+            acc[1].extend(trans)
+            if fh:
+                for r, t in zip(rows, trans):
+                    fh.write(json.dumps({"seller": who, **r, "transcript": t["transcript"]}, ensure_ascii=False) + "\n")
+                fh.flush()
+        print(f"[{len(ours[0])}/{len(scen)}] {time.time() - t0:.0f}s  {llm_stats()}", flush=True)
+    if fh:
+        fh.close()
     if args.no_baseline:
         base = ours
     print(f"set {args.set}  seed {args.seed}  n {len(scen)}  params {args.params}  {time.time() - t0:.0f}s")
     print(table(args.set, ours, base))
-    try:
-        import llm
-        import llm_buyers
-        print("llm", llm.STATS, "buyer replies", llm_buyers.FALLBACKS)
-    except Exception:
-        pass
-    if args.out:
-        with open(args.out, "w", encoding="utf-8") as fh:
-            for who, (rows, trans) in (("ours", ours), ("base", base)):
-                for r, t in zip(rows, trans):
-                    fh.write(json.dumps({"seller": who, **r, "transcript": t["transcript"]}, ensure_ascii=False) + "\n")
+    print(llm_stats())
+
+
+def llm_stats():
+    if "llm" not in sys.modules:
+        return ""
+    import llm
+    import llm_buyers
+    return f"llm {llm.STATS} buyer replies {llm_buyers.FALLBACKS}"
+
+
+def from_log(path):
+    """Table from a (possibly partial) --out file: only scenarios finished by both sellers."""
+    got = {"ours": {}, "base": {}}
+    for line in open(path, encoding="utf-8"):
+        r = json.loads(line)
+        got[r["seller"]][r["id"]] = r
+    ids = [i for i in got["ours"] if i in got["base"]]
+    pack = lambda who: ([got[who][i] for i in ids], [{"transcript": got[who][i]["transcript"]} for i in ids])
+    print(f"{path}: {len(ids)} negotiations finished by both sellers")
+    print(table(path, pack("ours"), pack("base")))
 
 
 if __name__ == "__main__":
