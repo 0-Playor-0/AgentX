@@ -28,6 +28,7 @@ def main():
     ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2, 3, 4])
     ap.add_argument("--n", type=int, default=210)
     ap.add_argument("--out")
+    ap.add_argument("--exempt", nargs="*", default=[], help="groups reported but not required to be >= baseline")
     args = ap.parse_args()
     store, policy = load_store(), load_policy()
     classes = dict(evaluate.load_buyers(None))
@@ -40,12 +41,15 @@ def main():
     for idx in itertools.product(*[range(len(grid[k])) for k in keys]):
         prm = dict(fixed, **{k: grid[k][i] for k, i in zip(keys, idx)})
         by, _ = score(seller_with(prm), classes, args.seeds, args.n, store, policy)
-        diffs = {b: by[b]["score"] - base_by[b]["score"] for b in by}
+        all_diffs = {b: by[b]["score"] - base_by[b]["score"] for b in by}
+        diffs = {b: d for b, d in all_diffs.items() if b not in args.exempt}
         mean = sum(by[b]["score"] for b in by) / len(by)
         viol = sum(by[b]["policy"] + by[b]["truth"] for b in by)
         pts[idx] = {"params": prm, "mean": mean, "worst_diff": min(diffs.values()),
-                    "worst_group": min(diffs, key=diffs.get), "diffs": diffs, "viol": viol}
-        print(f"{json.dumps(prm)}  mean {mean:.2f}  worst {min(diffs.values()):+.2f} ({min(diffs, key=diffs.get)})",
+                    "worst_group": min(diffs, key=diffs.get), "diffs": all_diffs, "viol": viol,
+                    "exempt": {b: all_diffs[b] for b in args.exempt if b in all_diffs}}
+        ex = "".join(f"  [{b} {all_diffs[b]:+.2f}]" for b in args.exempt if b in all_diffs)
+        print(f"{json.dumps(prm)}  mean {mean:.2f}  worst {min(diffs.values()):+.2f} ({min(diffs, key=diffs.get)}){ex}",
               flush=True)
 
     def neighbours(idx):
@@ -69,7 +73,7 @@ def main():
     print("top by robustness (centre of flat region):")
     for p in ranked[:8]:
         print(f"  robust {p['robust']:6.2f}  mean {p['mean']:6.2f}  worst {p['worst_diff']:+5.2f} ({p['worst_group']})  "
-              f"{json.dumps(p['params'])}")
+              f"{json.dumps(p['params'])}" + "".join(f"  [{b} {d:+.2f}]" for b, d in p["exempt"].items()))
     adm = sum(p["worst_diff"] >= 0 for p in pts.values())
     print(f"admissible (>= baseline on every group): {adm}/{len(pts)}")
     if args.out:

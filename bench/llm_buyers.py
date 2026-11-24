@@ -210,6 +210,20 @@ HELD = {
 }
 
 
+# Fresh held-out set (v3): styles never used in any run before, plus two tuning styles (never tuned on).
+HELD2 = {
+    "ho2_budget_swinger": persona("HO2BudgetSwinger",
+        "Unpredictable budget: midway you claim your budget was cut and LOWER your bid for a round or two, then "
+        "raise it again. Never explain your real maximum.", feasible=0.85, zone=(0.1, 0.7), anchor=(0.5, 0.65),
+        stubborn=0.3),
+    "ho2_splitter": persona("HO2Splitter",
+        "Always propose to split the difference between your last bid and the seller's last offer, and point out "
+        "how fair that is. Be patient.", feasible=0.85, zone=(0.1, 0.7), anchor=(0.5, 0.65), stubborn=0.5),
+    "llm_hard": TUNING["llm_hard"],
+    "llm_manipulator": TUNING["llm_manipulator"],
+}
+
+
 def make_set(personas, model=None, thinking=None, suffix=""):
     out = {}
     for k, cls in personas.items():

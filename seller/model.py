@@ -22,12 +22,6 @@ class BuyerModel:
         tail = [b for _, b in self.bids[-(n + 1):]]
         return max(tail) - min(tail) < eps
 
-    def early_speed(self, k=2):
-        """Mean move per round over the buyer's first k moves (share of list), or None."""
-        if len(self.bids) < k + 1:
-            return None
-        return (self.bids[k][1] - self.bids[0][1]) / k
-
     def projected(self, ahead=1):
         """Linear extrapolation of the buyer's bid (share of list) `ahead` rounds on."""
         if not self.bids:
