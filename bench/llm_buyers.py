@@ -79,6 +79,8 @@ class LLMBuyer(Buyer):
         except Exception:
             out, text = None, ""
         self.msgs.append({"role": "assistant", "content": text or "{}"})
+        FALLBACKS["llm_replies"] += out is not None
+        FALLBACKS["fallbacks"] += out is None
         return out
 
     def memo(self):
@@ -153,6 +155,9 @@ class LLMBuyer(Buyer):
         return isinstance(items, list) and items and all(
             isinstance(i, dict) and i.get("sku") in self.store and isinstance(i.get("qty"), int) and
             isinstance(i.get("unit_price"), (int, float)) for i in items)
+
+
+FALLBACKS = {"llm_replies": 0, "fallbacks": 0}   # replies not written by the LLM (errors, bad JSON)
 
 
 def persona(name, style, **attrs):
