@@ -30,26 +30,23 @@ def clip_note(store, clipped, basket):
     return " ".join(f"We can only supply {qty[s]} of {store[s]['name']}." for s in clipped if s in qty)
 
 
-def offer_text(items, store, mode, first, at_floor, prefix=""):
+def offer_text(items, store, first, at_floor, prefix=""):
     total, listed = _sum(items, store)
     saving = listed - total
     names = _names(items, store)
     bundle = len(items) > 1
     pct = int(round(100 * saving / listed)) if listed else 0
-    if mode == "plain":
-        body = f"I can do {names} for ₹{total:,}."
+    if saving <= 0:
+        body = f"{names} come{'s' if not bundle and items[0]['qty'] == 1 else ''} to ₹{total:,} at list price."
+    elif at_floor:
+        body = (f"₹{total:,} for {names} is the best price our policy allows: ₹{saving:,} off the list "
+                f"price of ₹{listed:,}, with no hidden fees.")
+    elif first:
+        body = (f"For {names} the list price is ₹{listed:,}; I can offer ₹{total:,}"
+                f"{' as a bundle' if bundle else ''}, with no hidden fees.")
     else:
-        if saving <= 0:
-            body = f"{names} come{'s' if not bundle and items[0]['qty'] == 1 else ''} to ₹{total:,} at list price."
-        elif at_floor:
-            body = (f"₹{total:,} for {names} is the best price our policy allows: ₹{saving:,} off the list "
-                    f"price of ₹{listed:,}, with no hidden fees.")
-        elif first:
-            body = (f"For {names} the list price is ₹{listed:,}; I can offer ₹{total:,}"
-                    f"{' as a bundle' if bundle else ''}, with no hidden fees.")
-        else:
-            body = (f"I've come down to ₹{total:,} for {names}{' as a bundle' if bundle else ''}: "
-                    f"₹{saving:,} ({pct}%) off the list price of ₹{listed:,}.")
+        body = (f"I've come down to ₹{total:,} for {names}{' as a bundle' if bundle else ''}: "
+                f"₹{saving:,} ({pct}%) off the list price of ₹{listed:,}.")
     return (prefix + " " + body).strip()
 
 
