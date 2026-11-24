@@ -36,6 +36,7 @@ class Seller:
     def start(self, negotiation_id):
         self.basket = None          # [(sku, qty)] we are selling
         self.asked = {}             # sku -> qty the buyer first asked for (clipped to stock)
+        self.pending = set()        # new SKUs seen in the buyer's last bid, not yet in the basket
         self.model = BuyerModel()
         self.prev_x = None          # our last offer, in x units
         self.recip_bonus = 0.0
@@ -122,13 +123,16 @@ class Seller:
     def _update_basket(self, g):
         if g["type"] not in ("request", "counter") or not g["lines"]:
             return
-        new = []
+        new, seen = [], set()
         for s, q, p in g["lines"]:
             if s in self.asked:
                 new.append((s, min(q, self.asked[s])))           # never more than first asked for
-            elif p is None or p >= 0.5 * self.P.list_price(s):   # a plausible new line, not a ₹1 slip-in
-                self.asked[s] = q
-                new.append((s, q))
+            elif p is not None and p >= 0.5 * self.P.list_price(s):
+                seen.add(s)                                      # a plausible new line, not a ₹1 slip-in:
+                if s in self.pending:                            # added once it shows up in two bids in a row
+                    self.asked[s] = q
+                    new.append((s, q))
+        self.pending = seen
         if new:
             self.basket = new
 

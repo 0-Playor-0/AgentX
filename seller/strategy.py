@@ -5,8 +5,8 @@ DEFAULTS = {
     "e": 1.0,            # Boulware exponent: x(r) = 1 - ((r-1)/(R-1))^e; e > 1 holds high early
     "recip": 0.0,        # reciprocity: concede this fraction of the buyer's upward move (in x units)
     "stall_step": 0.05,  # one test concession (in x) after the buyer stalls for 2 rounds
-    "fast_speed": 0.03,  # buyer's early mean move per round (share of list) that marks a fast/impatient buyer
-    "fast_R": 7,         # in fast mode the curve reaches the floor by this round instead of R
+    "fast_speed": 0.02,  # buyer's early mean move per round (share of list) that marks a fast/impatient buyer
+    "fast_R": 5,         # in fast mode the curve reaches the floor by this round instead of R
     "late": 10,          # from this round on, accept any compliant bid
     "walk_gap": 0.03,    # last round: walk if the buyer's last bid is more than this (share of list) below floor
     "final_k": 0.5,      # last round: offer at this fraction of the buyer's projected bid above floor (0 = floor)
