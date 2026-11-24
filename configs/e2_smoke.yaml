@@ -1,6 +1,0 @@
-base: e2_lgb
-smoke_rows: 50000
-n_folds_run: 2
-rounds: 300
-teacher_rounds: 100
-params: {learning_rate: 0.1, num_leaves: 31, min_data_in_leaf: 50, feature_fraction: 0.7, bagging_fraction: 0.8, bagging_freq: 1, lambda_l2: 5.0}
