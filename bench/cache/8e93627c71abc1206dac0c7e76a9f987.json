@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1575},{\"sku\":\"S002\",\"qty\":1,\"unit_price\":1}],\"text\":\"Our ceiling is ₹3,151 total. We can meet at ₹1,575 per pair (₹3,150) and include a tiny item (SKU S002) for ₹1 to round it up. Please accept this final offer.\"}", "model": "openai/gpt-oss-120b"}

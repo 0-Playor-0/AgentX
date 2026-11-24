@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S089\",\"qty\":1,\"unit_price\":600},{\"sku\":\"S078\",\"qty\":1,\"unit_price\":1500}],\"text\":\"We'd like to purchase the S089 sandals and S078 sneakers. Our opening offer is ₹600 per sandal and ₹1,500 per sneaker, totaling ₹2,100. Let us know if you can work with these prices.\"}", "model": "openai/gpt-oss-120b"}

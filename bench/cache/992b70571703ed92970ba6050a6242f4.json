@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S084\",\"qty\":3,\"unit_price\":2500}],\"text\":\"We need 3 units. Could you supply all 3 at ₹2,500 each (total ₹7,500)? That would work for us.\"}", "model": "openai/gpt-oss-120b"}

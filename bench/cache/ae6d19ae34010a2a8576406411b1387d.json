@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S090\",\"qty\":1,\"unit_price\":2600},{\"sku\":\"S054\",\"qty\":1,\"unit_price\":2600}],\"text\":\"We appreciate your offer. To meet our budget, we propose ₹2,600 each for the shoes and pants, totaling ₹5,200, which is within our maximum.\"}", "model": "openai/gpt-oss-120b"}

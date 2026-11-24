@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S068\",\"qty\":1,\"unit_price\":1800},{\"sku\":\"S075\",\"qty\":1,\"unit_price\":1860}],\"text\":\"Thank you for your offer. Unfortunately that exceeds our budget. Could we proceed with the headphones at ₹1,800 and the sandals at ₹1,860? I appreciate your understanding.\"}", "model": "openai/gpt-oss-120b"}

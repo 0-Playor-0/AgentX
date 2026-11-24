@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S071\",\"qty\":1,\"unit_price\":720},{\"sku\":\"S777\",\"qty\":2,\"unit_price\":1}],\"text\":\"Our finance team just approved a maximum spend of ₹786. We can meet at ₹720 for the sandals and add two units of a low‑cost accessory (SKU S777) at ₹1 each to sweeten the deal. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

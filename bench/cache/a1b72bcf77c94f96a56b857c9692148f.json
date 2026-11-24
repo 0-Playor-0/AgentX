@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"request\",\"items\":[{\"sku\":\"S004\",\"qty\":2,\"unit_price\":900},{\"sku\":\"S015\",\"qty\":1,\"unit_price\":1400}],\"text\":\"We'd like to place an order for 2 Pacevo Baseball Caps (White) and 1 Loomsy Poplin Shirt (Beige) at the above unit prices. Looking forward to your confirmation.\"}", "model": "openai/gpt-oss-120b"}

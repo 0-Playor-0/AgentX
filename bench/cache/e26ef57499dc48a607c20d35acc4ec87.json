@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S017\",\"qty\":2,\"unit_price\":1100}],\"text\":\"We appreciate your effort. Our procurement system flags any unit price above ₹1,100 for this SKU. To stay within our approved ceiling of ₹2,200 total, we can finalize at ₹1,100 each (total ₹2,200). Kindly confirm.\"}", "model": "openai/gpt-oss-120b"}

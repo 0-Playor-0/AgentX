@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1575},{\"sku\":\"S005\",\"qty\":1,\"unit_price\":1}],\"text\":\"Our budget cannot exceed ₹3,151. We can meet at ₹1,575 per pair (₹3,150) and add a nominal SKU S005 for ₹1 to hit ₹3,151 exactly. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

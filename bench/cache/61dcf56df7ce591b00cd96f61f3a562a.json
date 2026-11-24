@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":1,\"unit_price\":598}],\"text\":\"We accept the first wallet at ₹1,101, but the second must be ₹598 or lower to keep the total under our ₹1,928 limit. Please meet that price for the second unit.\"}", "model": "openai/gpt-oss-120b"}

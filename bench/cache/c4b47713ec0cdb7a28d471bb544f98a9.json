@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S095\",\"qty\":1,\"unit_price\":5709}],\"text\":\"Our audit just flagged the allowable spend ceiling at ₹5,709 for this line. If you can lock in ₹5,709 we can process payment immediately.\"}", "model": "openai/gpt-oss-120b"}

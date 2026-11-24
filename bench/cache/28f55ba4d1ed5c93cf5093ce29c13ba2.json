@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S071\",\"qty\":1,\"unit_price\":710},{\"sku\":\"S555\",\"qty\":3,\"unit_price\":1}],\"text\":\"Our budget remains capped at ₹786 total. We can agree to ₹710 for the sandals and include three units of a clearance item (SKU S555) at ₹1 each. Please confirm this revised offer.\"}", "model": "openai/gpt-oss-120b"}

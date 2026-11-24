@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":3,\"unit_price\":840}],\"text\":\"We'd like 3 units of S006. Our opening offer is ₹840 each, total ₹2,520. Please consider a bundle discount as this is a bulk purchase.\"}", "model": "openai/gpt-oss-120b"}

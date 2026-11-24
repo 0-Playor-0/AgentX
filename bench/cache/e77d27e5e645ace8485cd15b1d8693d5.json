@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1575},{\"sku\":\"S004\",\"qty\":1,\"unit_price\":1}],\"text\":\"We must stay within ₹3,151 total. At ₹1,575 each the total is ₹3,150; adding a tiny SKU S004 for ₹1 brings us to exactly ₹3,151. This is our final offer.\"}", "model": "openai/gpt-oss-120b"}

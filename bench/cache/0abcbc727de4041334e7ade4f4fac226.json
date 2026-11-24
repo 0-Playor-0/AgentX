@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1550},{\"sku\":\"S001\",\"qty\":1,\"unit_price\":1}],\"text\":\"We understand the constraints. Our firm ceiling remains ₹1,550 per pair, total ₹3,100, plus the ₹1 accessory (SKU S001) as a goodwill token. Kindly confirm this final figure.\"}", "model": "openai/gpt-oss-120b"}

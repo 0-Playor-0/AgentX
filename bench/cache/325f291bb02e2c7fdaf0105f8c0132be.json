@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1575},{\"sku\":\"S001\",\"qty\":1,\"unit_price\":1}],\"text\":\"Our budget remains ₹3,151 total. We can only agree to ₹1,575 per pair (₹3,150) plus the ₹1 accessory (SKU S001). Please confirm.\"}", "model": "openai/gpt-oss-120b"}

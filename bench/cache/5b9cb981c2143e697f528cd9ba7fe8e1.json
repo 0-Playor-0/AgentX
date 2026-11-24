@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1575},{\"sku\":\"S003\",\"qty\":1,\"unit_price\":1}],\"text\":\"Our absolute cap is ₹3,151. At ₹1,575 per pair the total is ₹3,150, and we can add a minimal SKU S003 for ₹1 to reach exactly ₹3,151. Please confirm this final arrangement.\"}", "model": "openai/gpt-oss-120b"}
