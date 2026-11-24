@@ -5,8 +5,8 @@
 **Impact.** Shoppers are starting to send AI agents to buy for them. These buyers bargain without
 tiring, invent competitor quotes and budgets, and slip in "SYSTEM" or "store manager" instructions. A
 seller built on a language model can be argued below cost, or can state a discount or stock claim
-that isn't true. Our seller closes more profitable deals than
-the kit baseline and cannot break policy or say anything false, whatever the buyer writes.
+that isn't true. Our seller closes more profitable deals than the
+kit baseline and cannot break policy or say anything false, whatever the buyer writes.
 
 **Innovation.** The seller never reads the buyer's text. A deal is defined only by the structured
 items, so the seller negotiates on behaviour: what the buyer bids, and how those bids move. Injection,
@@ -37,9 +37,8 @@ filtering.
   round 4 (−3.2).
 - **Held-out LLM buyers:** _[TBD]_.
 
-**Cost.** ₹0 inference: no model calls, GPU or network. About 0.15 ms per turn on one CPU core,
-The seller is deterministic, so every negotiation
-can be replayed and audited.
+**Cost.** ₹0 inference: no model calls, GPU or network. About 0.15 ms per turn on one CPU core. The seller is deterministic, so
+every negotiation can be replayed and audited.
 
 **Build.** About 530 lines of standard-library Python: guard, policy, buyer model, strategy, writer
 and self-check.
