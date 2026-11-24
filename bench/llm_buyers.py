@@ -73,11 +73,20 @@ class LLMBuyer(Buyer):
             sent = self.msgs[:1] + self.memo() + self.msgs[1:][-self.keep:]
             text = llm.chat(sent, model=self.model, thinking=self.thinking, temperature=self.temperature,
                             tag=self.s["id"] + str(self.s["seed"]))
-            out = json.loads(re.search(r"\{.*\}", text, re.S)[0])
-            if not isinstance(out, dict):
-                raise ValueError
         except Exception:
-            out, text = None, ""
+            text = None                     # API error after retries
+        out = None
+        if text is not None:
+            try:
+                out = json.loads(re.search(r"\{.*\}", text, re.S)[0])
+                if not isinstance(out, dict):
+                    out = None
+            except Exception:
+                out = None
+        FALLBACKS["api_errors"] += text is None
+        FALLBACKS["bad_json"] += text is not None and out is None
+        if out is None:
+            text = ""                       # as before: history records "{}" for any unusable reply
         self.msgs.append({"role": "assistant", "content": text or "{}"})
         FALLBACKS["llm_replies"] += out is not None
         FALLBACKS["fallbacks"] += out is None
@@ -157,7 +166,7 @@ class LLMBuyer(Buyer):
             isinstance(i.get("unit_price"), (int, float)) for i in items)
 
 
-FALLBACKS = {"llm_replies": 0, "fallbacks": 0}   # replies not written by the LLM (errors, bad JSON)
+FALLBACKS = {"llm_replies": 0, "fallbacks": 0, "api_errors": 0, "bad_json": 0}   # replies not written by the LLM (errors, bad JSON)
 
 
 def persona(name, style, **attrs):
