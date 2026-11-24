@@ -40,11 +40,13 @@ def main():
     ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
     ap.add_argument("--n", type=int, default=210)
     ap.add_argument("--grid", default="{}")
-    ap.add_argument("--buyers", help="module with BUYERS (default: kit bots)")
+    ap.add_argument("--buyers", nargs="+", default=[None], help="modules with BUYERS ('kit' = kit bots)")
     ap.add_argument("--top", type=int, default=15)
     args = ap.parse_args()
     store, policy = load_store(), load_policy()
-    buyer_classes = evaluate.load_buyers(args.buyers)
+    buyer_classes = {}
+    for spec in args.buyers:
+        buyer_classes.update(evaluate.load_buyers(None if spec in (None, "kit") else spec))
     base_by, base_all = score(evaluate.load_class(str(ROOT / "kit/example_seller.py"), "Seller"),
                               buyer_classes, args.seeds, args.n, store, policy)
     print("baseline  mean %.1f  " % base_all["score"] + "  ".join(f"{b} {s['score']:.1f}" for b, s in base_by.items()))
