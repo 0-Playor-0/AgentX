@@ -1,0 +1,10 @@
+set heldout-oss  seed 500  n 24  params {}  1337s
+group                          n   ours   base   diff  deals o/b   viol o/b  dead o/b  r10 offers, EV
+ho_analyst@openai/gpt-oss-120b   4   29.1   48.9  -19.8    2/3      0/0      0/0      0,   -
+ho_basket_changer@openai/gpt-oss-120b   4   36.6   36.6   +0.0    2/2      0/0      0/0      0,   -
+ho_polite_immovable@openai/gpt-oss-120b   4   30.6   30.7   -0.1    2/2      0/0      0/0      0,   -
+llm_cooperative@openai/gpt-oss-120b   4   83.0   78.3   +4.6    4/4      0/0      0/0      0,   -
+llm_hard@openai/gpt-oss-120b   4   29.1   31.9   -2.8    2/2      0/0      0/0      0,   -
+llm_manipulator@openai/gpt-oss-120b   4   40.3   40.8   -0.5    2/2      0/0      0/0      0,   -
+ALL                           24   41.4   44.5   -3.1   14/15     0/0      0/0      0,   -
+llm {'calls': 134, 'cached': 24, 'retries': 0, 'errors': 0, 'tokens': 121044} buyer replies {'llm_replies': 158, 'fallbacks': 0}
