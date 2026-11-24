@@ -6,3 +6,4 @@ __pycache__/
 *.pyc
 .DS_Store
 bench/results/smoke_*
+bench/results/*.err
