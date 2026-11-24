@@ -46,6 +46,7 @@ class Seller:
         self.last_offer = None
         self.offers = 0
         self.notes = ""
+        self.clipped = {}
         self.ctx = selfcheck.Context(self.store, self.policy)
 
     def respond(self, message):
@@ -152,6 +153,7 @@ class Seller:
             self.basket = [(s, q) for s, q, _ in g["lines"]]
             self.asked = dict(self.basket)
             self.notes = writer.notes(self.store, g["oos"], g["clipped"], self.basket)
+            self.clipped = dict(g["clipped"])
         else:
             self._update_basket(g)
 
@@ -185,7 +187,8 @@ class Seller:
         items = self._price(x)
         at_floor = all(i["unit_price"] == self.P.floor(i["sku"]) for i in items)
         text = writer.offer_text(items, self.store, prm["mode"], self.offers == 0, at_floor,
-                                 prefix=self.notes if self.offers == 0 else "")
+                                 prefix=self.notes if self.offers == 0 else
+                                 writer.clip_note(self.store, self.clipped, self.basket))
         self.offers += 1
         return {"type": "offer", "items": items, "text": text}
 

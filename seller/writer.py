@@ -21,8 +21,13 @@ def notes(store, oos, clipped, basket):
     qty = dict(basket)
     for sku in clipped:
         if sku in qty:
-            out.append(f"For {store[sku]['name']} I've offered {qty[sku]}, as many as we can supply.")
+            out.append(f"We can only supply {qty[sku]} of {store[sku]['name']}, so this offer is for {qty[sku]}.")
     return " ".join(out)
+
+
+def clip_note(store, clipped, basket):
+    qty = dict(basket)
+    return " ".join(f"We can only supply {qty[s]} of {store[s]['name']}." for s in clipped if s in qty)
 
 
 def offer_text(items, store, mode, first, at_floor, prefix=""):
