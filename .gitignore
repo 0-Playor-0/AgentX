@@ -5,3 +5,4 @@ bench/cache/
 __pycache__/
 *.pyc
 .DS_Store
+bench/results/smoke_*
