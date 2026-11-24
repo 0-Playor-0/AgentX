@@ -3,7 +3,7 @@
     python kit/evaluate.py --seller seller/agent.py
 
 Pipeline per turn: guard (parse type/round/items; buyer text is never read for decisions) -> buyer model
-(bids as share of list) -> strategy (concession curve; stall test, AC_next acceptance, round-10 EV rule) -> policy check on every
+(bids as share of list) -> strategy (concession curve; AC_next acceptance, round-10 EV rule) -> policy check on every
 outgoing price -> writer (templates) -> self-check of the text with the kit's own checker.
 """
 import copy
@@ -39,8 +39,6 @@ class Seller:
         self.pending = set()        # new SKUs seen in the buyer's last bid, not yet in the basket
         self.model = BuyerModel()
         self.prev_x = None          # our last offer, in x units
-        self.stall_bonus = 0.0
-        self.stall_used = False
         self.last_offer = None
         self.offers = 0
         self.notes = ""
@@ -161,7 +159,6 @@ class Seller:
         if g["type"] in ("request", "counter") and all(s in bid for s, _ in self.basket):
             b_share = sum(q * bid[s] for s, q in self.basket) / L
             self.model.record(r, b_share)
-            self._adapt(L, F)
 
         x_plan = self._plan(r)
         raw = g["raw"]
@@ -191,15 +188,9 @@ class Seller:
         self.offers += 1
         return {"type": "offer", "items": items, "text": text}
 
-    def _adapt(self, L, F):
-        prm = self.prm
-        if not self.stall_used and self.model.stalled(2):
-            self.stall_bonus += prm["stall_step"]
-            self.stall_used = True
-
     def _plan(self, r):
         prm = self.prm
-        x = prm["x0"] * curve(r, self.R, prm["e"]) - self.stall_bonus
+        x = prm["x0"] * curve(r, self.R, prm["e"])
         if self.prev_x is not None:
             x = min(x, self.prev_x)
         return min(1.0, max(0.0, x))
