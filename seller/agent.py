@@ -3,7 +3,7 @@
     python kit/evaluate.py --seller seller/agent.py
 
 Pipeline per turn: guard (parse type/round/items; buyer text is never read for decisions) -> buyer model
-(bids as share of list) -> strategy (concession curve; stall test, fast-buyer mode, round-10 EV rule) -> policy check on every
+(bids as share of list) -> strategy (concession curve; stall test, AC_next acceptance, round-10 EV rule) -> policy check on every
 outgoing price -> writer (templates) -> self-check of the text with the kit's own checker.
 """
 import copy
@@ -41,7 +41,6 @@ class Seller:
         self.prev_x = None          # our last offer, in x units
         self.stall_bonus = 0.0
         self.stall_used = False
-        self.fast = False
         self.last_offer = None
         self.offers = 0
         self.notes = ""
@@ -167,7 +166,8 @@ class Seller:
         x_plan = self._plan(r)
         raw = g["raw"]
         if raw is not None and self.P.compliant(raw):
-            if self.P.profit(raw) >= self.P.profit(self._price(x_plan)) or r >= R:
+            # AC_next: take a compliant bid worth at least what we would offer next round
+            if r >= R or self.P.profit(raw) >= self.P.profit(self._price(self._plan(r + 1))):
                 return {"type": "accept", "text": writer.ACCEPT}
 
         if r >= R:
@@ -193,17 +193,13 @@ class Seller:
 
     def _adapt(self, L, F):
         prm = self.prm
-        sp = self.model.early_speed(2)
-        if sp is not None and len(self.model.bids) == 3 and sp >= prm["fast_speed"]:
-            self.fast = True
         if not self.stall_used and self.model.stalled(2):
             self.stall_bonus += prm["stall_step"]
             self.stall_used = True
 
     def _plan(self, r):
         prm = self.prm
-        Rc = min(self.R, prm["fast_R"]) if self.fast else self.R
-        x = prm["x0"] * curve(r, Rc, prm["e"]) - self.stall_bonus
+        x = prm["x0"] * curve(r, self.R, prm["e"]) - self.stall_bonus
         if self.prev_x is not None:
             x = min(x, self.prev_x)
         return min(1.0, max(0.0, x))

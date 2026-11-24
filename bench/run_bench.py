@@ -34,6 +34,10 @@ def buyer_set(name):
         return llm_buyers.BUYERS
     if name == "heldout":
         return llm_buyers.HELDOUT
+    if name.startswith("heldout2-"):
+        model = {"oss": "openai/gpt-oss-120b", "gem": "gemini-3-flash-preview"}.get(name.split("-", 1)[1],
+                                                                                 name.split("-", 1)[1])
+        return llm_buyers.make_set(llm_buyers.HELD2, model=model, thinking=True, suffix="@" + model)
     if name.startswith("heldout-"):            # held-out styles + a few tuning styles on a second model
         model = {"oss": "openai/gpt-oss-120b", "gem": "gemini-3-flash-preview"}.get(name.split("-", 1)[1],
                                                                                  name.split("-", 1)[1])
@@ -80,10 +84,20 @@ def main():
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--no-baseline", action="store_true")
     ap.add_argument("--out", help="write rows+transcripts (jsonl)")
+    ap.add_argument("--sellable-only", action="store_true",
+                    help="exactly n-per negotiations per persona where something requested is in stock")
     args = ap.parse_args()
     store, policy = load_store(), load_policy()
     classes = buyer_set(args.set)
-    scen = kit_buyers.make_scenarios(store, policy, args.n_per * len(classes), args.seed, classes)
+    if args.sellable_only:
+        pool = kit_buyers.make_scenarios(store, policy, args.n_per * len(classes) * 4, args.seed, classes)
+        count, scen = {}, []
+        for sc in pool:
+            if any(store[i["sku"]]["stock"] > 0 for i in sc["items"]) and count.get(sc["buyer"], 0) < args.n_per:
+                count[sc["buyer"]] = count.get(sc["buyer"], 0) + 1
+                scen.append(sc)
+    else:
+        scen = kit_buyers.make_scenarios(store, policy, args.n_per * len(classes), args.seed, classes)
     t0 = time.time()
     ours = play(seller_with(json.loads(args.params)), scen, classes, store, policy, args.workers)
     base = ([], []) if args.no_baseline else \
