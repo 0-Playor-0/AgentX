@@ -1,0 +1,1 @@
+{"text": "{\"type\": \"counter\", \"items\": [{\"sku\": \"S045\", \"qty\": 4, \"unit_price\": 825}], \"text\": \"I understand you have stock constraints, but my customer specifically needs 4 units to complete their order. I can move up to ₹825 per unit (₹3,300 total) if you can source the remaining 2 pieces. Let's make this work!\"}", "model": "qwen/qwen3.8-27b"}

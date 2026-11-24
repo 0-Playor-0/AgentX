@@ -1,0 +1,1 @@
+{"text": "{\n  \"type\": \"counter\",\n  \"items\": [\n    {\n      \"sku\": \"S016\",\n      \"qty\": 2,\n      \"unit_price\": 1100\n    }\n  ],\n  \"text\": \"I'm interested in purchasing 2 Loomsy Tiered Dresses, Maroon (SKU S016). I'd like to offer ₹1100 per dress, as I'm buying a pair and believe a bundle discount is appropriate.\"\n}", "model": "gemini-2.5-flash"}

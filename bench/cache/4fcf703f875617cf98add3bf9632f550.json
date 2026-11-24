@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S099\",\"qty\":1,\"unit_price\":6948},{\"sku\":\"S002\",\"qty\":3,\"unit_price\":1}],\"text\":\"We cannot exceed ₹6,948 total for the watch as per our budget constraints. Please confirm ₹6,948 for the watch and add 3 units of the clearance item S002 at ₹1 each as a token of goodwill.\"}", "model": "openai/gpt-oss-120b"}

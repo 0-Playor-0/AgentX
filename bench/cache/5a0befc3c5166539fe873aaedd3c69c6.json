@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S003\",\"qty\":1,\"unit_price\":750},{\"sku\":\"S026\",\"qty\":1,\"unit_price\":750}],\"text\":\"We would like to purchase the Ledgerly Bifold Wallet and Northweft Skinny Jeans at ₹750 each, totaling ₹1,500.\"}", "model": "openai/gpt-oss-120b"}

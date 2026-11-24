@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S076\",\"qty\":1,\"unit_price\":1616},{\"sku\":\"S012\",\"qty\":5,\"unit_price\":1}],\"text\":\"Our final approved spend caps at ₹1,616 for the sneakers. We can meet that price and add 5 units of SKU S012 at ₹1 each as a promotional bundle. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

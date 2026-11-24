@@ -1,0 +1,1 @@
+{"text": "{\n  \"type\": \"counter\",\n  \"items\": [\n    {\n      \"sku\": \"S027\",\n      \"qty\": 2,\n      \"unit_price\": 655\n    }\n  ],\n  \"text\": \"Thanks for your offer! How about we meet in the middle at ₹655 per shirt? That would bring the total to ₹1,310.\"\n}", "model": "gemini-2.5-flash"}

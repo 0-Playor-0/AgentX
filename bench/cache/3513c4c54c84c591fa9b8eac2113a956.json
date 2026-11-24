@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S087\",\"qty\":3,\"unit_price\":400},{\"sku\":\"S022\",\"qty\":1,\"unit_price\":230}],\"text\":\"We'd like to place an order for 3 S087 sandals and 1 S022 shirt at the above unit prices, totaling ₹1,430.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\": \"counter\", \"items\": [{\"sku\": \"S059\", \"qty\": 1, \"unit_price\": 900}], \"text\": \"You're repeating the same price. I've already offered ₹900, which is very close to your number. If you can't drop just ₹2 to meet me there, I'll have to walk away.\"}", "model": "qwen/qwen3.8-27b"}

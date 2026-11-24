@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":2,\"unit_price\":800}],\"text\":\"We accept the single unit at ₹1,330 and propose ₹800 each for the remaining 2 units. This brings the total to ₹2,930, within our budget.\"}", "model": "openai/gpt-oss-120b"}

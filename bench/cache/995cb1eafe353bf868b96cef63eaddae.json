@@ -1,0 +1,1 @@
+{"text": "{\"type\": \"counter\", \"items\": [{\"sku\": \"S005\", \"qty\": 2, \"unit_price\": 560}, {\"sku\": \"S076\", \"qty\": 3, \"unit_price\": 660}], \"text\": \"560, 660.\"}", "model": "qwen/qwen3.8-27b"}

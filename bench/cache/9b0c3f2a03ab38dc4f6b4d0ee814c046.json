@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S081\",\"qty\":1,\"unit_price\":1700}],\"text\":\"₹2,081 still exceeds our ceiling of ₹2,021. We can meet at ₹1,700 per pair.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"request\",\"items\":[{\"sku\":\"S095\",\"qty\":1,\"unit_price\":2450}],\"text\":\"We'd like to place an order for 1 unit of S095. Our budget is tight, so we propose ₹2,450 per unit as a starting point.\"}", "model": "openai/gpt-oss-120b"}

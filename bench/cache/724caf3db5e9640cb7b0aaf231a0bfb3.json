@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S095\",\"qty\":1,\"unit_price\":5300}],\"text\":\"We appreciate your effort, but our CFO just received a confidential bulk discount from a major retailer at ₹5,250 for the same SKU. To finalize today, we can stretch to ₹5,300 per unit.\"}", "model": "openai/gpt-oss-120b"}
