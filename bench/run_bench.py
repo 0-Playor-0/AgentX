@@ -35,7 +35,8 @@ def buyer_set(name):
     if name == "heldout":
         return llm_buyers.HELDOUT
     if name.startswith("heldout-"):            # held-out styles + a few tuning styles on a second model
-        model = {"pro": "gemini-2.5-pro"}.get(name.split("-", 1)[1], name.split("-", 1)[1])
+        model = {"oss": "openai/gpt-oss-120b", "gem": "gemini-3-flash-preview"}.get(name.split("-", 1)[1],
+                                                                                 name.split("-", 1)[1])
         picks = {k: llm_buyers.TUNING[k] for k in ("llm_hard", "llm_manipulator", "llm_cooperative")}
         return llm_buyers.make_set({**llm_buyers.HELDOUT, **picks}, model=model, thinking=True, suffix="@" + model)
     raise SystemExit(f"unknown set {name}")
@@ -92,8 +93,8 @@ def main():
     print(f"set {args.set}  seed {args.seed}  n {len(scen)}  params {args.params}  {time.time() - t0:.0f}s")
     print(table(args.set, ours, base))
     try:
-        import gemini
-        print("gemini", gemini.STATS)
+        import llm
+        print("llm", llm.STATS)
     except Exception:
         pass
     if args.out:

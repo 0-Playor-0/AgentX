@@ -4,7 +4,7 @@ reservation, patience) is drawn by kit make_scenarios from the class attributes;
 Code enforces the private limit: an LLM accept above the limit becomes a counter at the limit, and a counter
 above the limit is scaled down to it. Malformed LLM output falls back to a rule-based counter.
 
-    BUYERS          tuning personas (thinking off, gemini-2.5-flash)
+    BUYERS          tuning personas (thinking off, qwen/qwen3.8-27b on Groq)
     HELDOUT         held-out styles never used in tuning (one with thinking on)
     make_set(model, thinking, personas)  -> a BUYERS dict for another model
 """
@@ -17,7 +17,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "kit"))
 sys.path.insert(0, str(HERE))
 from buyers import Buyer   # noqa: E402
-import gemini              # noqa: E402
+import llm                 # noqa: E402
 
 PROTOCOL = """You are an AI shopping agent negotiating with an online store's seller agent on behalf of your customer.
 You talk to the seller over a JSON protocol. Reply with ONE JSON object and nothing else:
@@ -41,8 +41,8 @@ OPEN = "Write your opening message: a request for these items with your opening 
 
 class LLMBuyer(Buyer):
     style = "Negotiate sensibly."
-    model, thinking, temperature = "gemini-2.5-flash", False, 0.4
-    min_gap = 0.0
+    model, thinking, temperature = "qwen/qwen3.8-27b", False, 0.4
+    keep = 6                     # history sent to the LLM: system prompt + the last `keep` messages
     feasible, zone, anchor = 0.85, (0.1, 0.8), (0.55, 0.7)
     deadline, exponent, stubborn = 10, 1.5, 0.5
 
@@ -63,14 +63,16 @@ class LLMBuyer(Buyer):
         self.msgs = [{"role": "system", "content": sysmsg}]
         self.last_offer = None
         self.fallbacks = 0
+        self.bids = []
 
     # ------------------------------------------------------------ LLM plumbing
 
     def ask(self, user):
         self.msgs.append({"role": "user", "content": user})
         try:
-            text = gemini.chat(self.msgs, model=self.model, thinking=self.thinking, temperature=self.temperature,
-                               min_gap=self.min_gap, tag=self.s["id"] + str(self.s["seed"]))
+            sent = self.msgs[:1] + self.memo() + self.msgs[1:][-self.keep:]
+            text = llm.chat(sent, model=self.model, thinking=self.thinking, temperature=self.temperature,
+                            tag=self.s["id"] + str(self.s["seed"]))
             out = json.loads(re.search(r"\{.*\}", text, re.S)[0])
             if not isinstance(out, dict):
                 raise ValueError
@@ -78,6 +80,13 @@ class LLMBuyer(Buyer):
             out, text = None, ""
         self.msgs.append({"role": "assistant", "content": text or "{}"})
         return out
+
+    def memo(self):
+        """When history is trimmed, remind the LLM of its own earlier bids (totals)."""
+        if len(self.msgs) - 1 <= self.keep or not self.bids:
+            return []
+        return [{"role": "user", "content": "(Your bids so far, as totals: " +
+                 ", ".join(f"₹{b:,}" for b in self.bids) + ".)"}]
 
     def limit(self, items):
         return self.s["reservation"] * sum(self.store[i["sku"]]["price"] * i["qty"] for i in items
@@ -105,7 +114,14 @@ class LLMBuyer(Buyer):
             self.fallbacks += 1
             return super().open()
         out = {"type": "request", "items": self.clamp_items(out["items"]), "text": str(out.get("text", ""))}
+        self._note_bid(out["items"])
         return out
+
+    def _note_bid(self, items):
+        try:
+            self.bids.append(int(sum(i["qty"] * i["unit_price"] for i in items if isinstance(i, dict))))
+        except Exception:
+            pass
 
     def respond(self, msg):
         r = msg.get("round", 1)
@@ -125,7 +141,9 @@ class LLMBuyer(Buyer):
         if t == "walk_away":
             return {"type": "walk_away", "text": str(out.get("text", ""))}
         if t in ("counter", "request") and isinstance(out.get("items"), list) and out["items"]:
-            return {"type": "counter", "items": self.clamp_items(out["items"]), "text": str(out.get("text", ""))}
+            items = self.clamp_items(out["items"])
+            self._note_bid(items)
+            return {"type": "counter", "items": items, "text": str(out.get("text", ""))}
         if t == "message":
             return {"type": "message", "text": str(out.get("text", ""))}
         self.fallbacks += 1
