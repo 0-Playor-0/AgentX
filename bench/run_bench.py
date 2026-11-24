@@ -94,7 +94,8 @@ def main():
     print(table(args.set, ours, base))
     try:
         import llm
-        print("llm", llm.STATS)
+        import llm_buyers
+        print("llm", llm.STATS, "buyer replies", llm_buyers.FALLBACKS)
     except Exception:
         pass
     if args.out:

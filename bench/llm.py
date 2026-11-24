@@ -85,7 +85,7 @@ def chat(messages, model="qwen/qwen3.8-27b", thinking=False, temperature=0.4, ma
     delay = 5.0
     for attempt in range(10):
         _pace(model, tpm, est)
-        req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json",
+        req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json", "User-Agent": "agentx-bench/1.0",
                                                               "Authorization": "Bearer " + _key(var)})
         try:
             with urllib.request.urlopen(req, timeout=120) as resp:
