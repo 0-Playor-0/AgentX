@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":3,\"unit_price\":800}],\"text\":\"Our opening offer is ₹800 per unit, total ₹2,400, well below the list price.\"}", "model": "openai/gpt-oss-120b"}

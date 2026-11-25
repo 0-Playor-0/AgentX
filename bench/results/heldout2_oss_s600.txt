@@ -3,3 +3,4 @@
 [12/32] 0s  llm {'calls': 0, 'cached': 135, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 135, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
 [16/32] 0s  llm {'calls': 0, 'cached': 172, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 172, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
 [20/32] 0s  llm {'calls': 0, 'cached': 223, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 223, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
+[24/32] 2727s  llm {'calls': 6, 'cached': 270, 'retries': 0, 'errors': 0, 'tokens': 7275, 'daily_waits': 8} buyer replies {'llm_replies': 276, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
