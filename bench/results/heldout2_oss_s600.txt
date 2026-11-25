@@ -1,1 +1,1 @@
-[4/32] 5471s  llm {'calls': 13, 'cached': 43, 'retries': 0, 'errors': 0, 'tokens': 14447, 'daily_waits': 26} buyer replies {'llm_replies': 56, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
+[4/32] 0s  llm {'calls': 0, 'cached': 56, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 56, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
