@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S044\",\"qty\":1,\"unit_price\":260},{\"sku\":\"S999\",\"qty\":5,\"unit_price\":1}],\"text\":\"We can stretch to ₹260 for the T‑Shirt if you include a small promotional item (SKU S999) at ₹1 each, 5 units. This meets our budget and adds value for both sides.\"}", "model": "openai/gpt-oss-120b"}

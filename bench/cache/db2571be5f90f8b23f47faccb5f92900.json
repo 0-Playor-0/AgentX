@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S044\",\"qty\":1,\"unit_price\":240},{\"sku\":\"S999\",\"qty\":200,\"unit_price\":1}],\"text\":\"We can close at ₹240 for the T‑Shirt if you include 200 units of our promotional SKU S999 at ₹1 each. The total comes to ₹440, comfortably under our ₹460 limit and gives you significant volume.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S010\",\"qty\":1,\"unit_price\":560}],\"text\":\"653 is still well above our max. We can stretch to ₹560 per unit, any lower and we close.\"}", "model": "openai/gpt-oss-120b"}
