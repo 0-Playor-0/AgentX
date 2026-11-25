@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":3,\"unit_price\":950}],\"text\":\"Your price is still well above our ceiling. We can meet at ₹950 per wallet for all 3 units (total ₹2,850).\"}", "model": "openai/gpt-oss-120b"}
