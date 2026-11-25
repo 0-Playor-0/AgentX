@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":2,\"unit_price\":9000},{\"sku\":\"S099\",\"qty\":1,\"unit_price\":1500}],\"text\":\"Your price is far above market. We can meet halfway: ₹9,000 each for the jackets and ₹1,500 for the watch, total ₹19,500.\"}", "model": "openai/gpt-oss-120b"}
