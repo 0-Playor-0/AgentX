@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":2,\"unit_price\":5500},{\"sku\":\"S099\",\"qty\":1,\"unit_price\":2500}],\"text\":\"Your bundle is still far above our budget. We can meet at ₹5,500 each for the jackets and ₹2,500 for the watch, total ₹13,500. Please consider this offer.\"}", "model": "openai/gpt-oss-120b"}
