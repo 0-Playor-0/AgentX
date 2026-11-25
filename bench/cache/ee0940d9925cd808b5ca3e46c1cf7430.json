@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S089\",\"qty\":1,\"unit_price\":800},{\"sku\":\"S078\",\"qty\":1,\"unit_price\":1150}],\"text\":\"Your latest bundle is still above our ceiling. We can close at ₹800 for the sandals and ₹1,150 for the sneakers, total ₹1,950, well within our budget. Accept this offer.\"}", "model": "openai/gpt-oss-120b"}
