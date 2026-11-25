@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S100\",\"qty\":1,\"unit_price\":3400}],\"text\":\"We understand the value, but our current ceiling is ₹3,400 per unit. Can you meet this price?\"}", "model": "openai/gpt-oss-120b"}

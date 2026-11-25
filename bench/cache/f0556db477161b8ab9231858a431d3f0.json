@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S089\",\"qty\":1,\"unit_price\":800},{\"sku\":\"S078\",\"qty\":1,\"unit_price\":1100}],\"text\":\"Your price is still above our max. We can agree at ₹800 for the sandals and ₹1,100 for the sneakers, total ₹1,900. Please accept.\"}", "model": "openai/gpt-oss-120b"}
