@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":2,\"unit_price\":5000},{\"sku\":\"S099\",\"qty\":1,\"unit_price\":2430}],\"text\":\"We'd like 2 Northweft Rain Jackets and 1 Wavlo Chronograph Watch. Our opening offer is ₹5,000 each for the jackets and ₹2,430 for the watch, total ₹12,430.\"}", "model": "openai/gpt-oss-120b"}
