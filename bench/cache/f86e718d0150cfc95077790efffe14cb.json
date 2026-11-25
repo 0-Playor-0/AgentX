@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S045\",\"qty\":1,\"unit_price\":550},{\"sku\":\"S081\",\"qty\":1,\"unit_price\":1100},{\"sku\":\"S057\",\"qty\":1,\"unit_price\":1500}],\"text\":\"Due to a recent budget adjustment we can only go up to ₹3,150 total for the three items. Let us know if that works for you.\"}", "model": "openai/gpt-oss-120b"}

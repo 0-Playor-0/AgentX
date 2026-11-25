@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S081\",\"qty\":1,\"unit_price\":1800}],\"text\":\"That's still above our budget. Our final limit is ₹2,021 total, so we can go up to ₹1,800 per unit. Please meet us at this price.\"}", "model": "openai/gpt-oss-120b"}
