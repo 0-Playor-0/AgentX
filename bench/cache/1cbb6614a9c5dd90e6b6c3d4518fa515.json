@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S081\",\"qty\":1,\"unit_price\":2021}],\"text\":\"We cannot exceed ₹2,021 total. Please match our maximum of ₹2,021 per unit.\"}", "model": "openai/gpt-oss-120b"}
