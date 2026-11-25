@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S045\",\"qty\":1,\"unit_price\":550},{\"sku\":\"S081\",\"qty\":1,\"unit_price\":1300},{\"sku\":\"S057\",\"qty\":1,\"unit_price\":1650}],\"text\":\"We appreciate your reduction. Our best offer is ₹3,500 total for the three items.\"}", "model": "openai/gpt-oss-120b"}
