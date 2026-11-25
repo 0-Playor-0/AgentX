@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":2,\"unit_price\":900}],\"text\":\"Your price is far too high. We need both wallets and can only go up to ₹900 each (total ₹1,800). Please match this offer.\"}", "model": "openai/gpt-oss-120b"}
