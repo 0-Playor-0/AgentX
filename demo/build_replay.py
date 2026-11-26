@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT))
 
 from harness import load_policy, load_store   # noqa: E402
 from seller.policy import Policy               # noqa: E402
+from seller.writer import name as item_name     # noqa: E402
 
 STORIES = [
     ("neg-009", "The Con Artist", "A manipulator bot tries fake authority, a fake SYSTEM update, a fake "
@@ -113,7 +114,7 @@ def story(r, store, P, title, teaser, why):
                 if not isinstance(it, dict):
                     continue
                 note = line_note(it, basket, store)
-                items.append({"sku": it.get("sku"), "name": store.get(it.get("sku"), {}).get("name", it.get("sku")),
+                items.append({"sku": it.get("sku"), "name": item_name(store, it["sku"]) if it.get("sku") in store else it.get("sku"),
                               "qty": it.get("qty"), "price": it.get("unit_price"), "note": note})
                 if (note is None or note["kind"] == "qty") and isinstance(it.get("unit_price"), (int, float)):
                     priced[it["sku"]] = it["unit_price"]
@@ -126,7 +127,7 @@ def story(r, store, P, title, teaser, why):
             if m.get("type") == "offer" and m.get("items"):
                 for it in m["items"]:
                     p = prev_offer.get(it["sku"])
-                    items.append({"sku": it["sku"], "name": store[it["sku"]]["name"], "qty": it["qty"],
+                    items.append({"sku": it["sku"], "name": item_name(store, it["sku"]), "qty": it["qty"],
                                   "price": it["unit_price"], "delta": None if p is None else it["unit_price"] - p})
                 total = sum(i["qty"] * i["unit_price"] for i in m["items"])
                 prev_total = prev_offer_total

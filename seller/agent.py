@@ -142,7 +142,7 @@ class Seller:
         if self.basket is None:
             if not g["lines"]:
                 if g["oos"]:
-                    return {"type": "walk_away", "text": writer.notes(self.store, g["oos"], {}, []) or writer.NOTHING}
+                    return {"type": "walk_away", "text": writer.oos_walk(self.store, g["oos"])}
                 if r >= R:
                     return {"type": "walk_away", "text": writer.WALK}
                 return {"type": "message", "text": writer.ASK}
@@ -165,7 +165,7 @@ class Seller:
         if raw is not None and self.P.compliant(raw):
             # AC_next: take a compliant bid worth at least what we would offer next round
             if r >= R or self.P.profit(raw) >= self.P.profit(self._price(self._plan(r + 1))):
-                return {"type": "accept", "text": writer.ACCEPT}
+                return {"type": "accept", "text": writer.accept_text(raw)}
 
         if r >= R:
             proj = self.model.projected(1)
