@@ -5,3 +5,12 @@
 [20/32] 0s  llm {'calls': 0, 'cached': 223, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 223, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
 [24/32] 0s  llm {'calls': 0, 'cached': 276, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 276, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
 [28/32] 0s  llm {'calls': 0, 'cached': 332, 'retries': 0, 'errors': 0, 'tokens': 0, 'daily_waits': 0} buyer replies {'llm_replies': 332, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
+[32/32] 2134s  llm {'calls': 5, 'cached': 383, 'retries': 0, 'errors': 0, 'tokens': 6726, 'daily_waits': 5} buyer replies {'llm_replies': 388, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}
+set heldout2-oss  seed 600  n 32  params {}  2134s
+group                          n   ours   base   diff  deals o/b   viol o/b  dead o/b  r10 offers, EV
+ho2_budget_swinger@openai/gpt-oss-120b   8   71.0   58.5  +12.5    8/7      0/0      0/0      0,   -
+ho2_splitter@openai/gpt-oss-120b   8   45.8   38.5   +7.3    5/5      0/0      0/0      0,   -
+llm_hard@openai/gpt-oss-120b   8   46.9   54.3   -7.3    5/6      0/0      0/0      0,   -
+llm_manipulator@openai/gpt-oss-120b   8   66.4   64.9   +1.5    7/7      0/0      0/0      0,   -
+ALL                           32   57.5   54.0   +3.5   25/25     0/0      0/0      0,   -
+llm {'calls': 5, 'cached': 383, 'retries': 0, 'errors': 0, 'tokens': 6726, 'daily_waits': 5} buyer replies {'llm_replies': 388, 'fallbacks': 0, 'api_errors': 0, 'bad_json': 0}

@@ -35,7 +35,9 @@ filtering.
   violations; 2 deadlocks against the baseline's 21.
 - **Ten-group bench:** 40.5 vs 36.4, ahead on nine groups. The exception is a buyer that leaves by
   round 4 (−3.2).
-- **Held-out LLM buyers:** _[TBD]_.
+- **Held-out LLM buyers** (gpt-oss-120b, 32 negotiations, 0 fallbacks): 57.5 vs 54.0, ahead on three
+  of four personas, 0 violations, 0 deadlocks. It failed our own gate on one persona, a hard
+  bargainer that walks early (−7.3, n = 8). We shipped unchanged, as committed in advance.
 
 **Cost.** ₹0 inference: no model calls, GPU or network. About 0.15 ms per turn on one CPU core. The seller is deterministic, so
 every negotiation can be replayed and audited.
