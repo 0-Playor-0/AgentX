@@ -62,16 +62,24 @@ LLM test buyers need `GROQ_API_KEY` or `GEMINI_API_KEY` (an environment variable
 - Violations: 0. Source: `bench/results/v3_robust_B_0.8_0.8.{txt,json}`.
 - early_walker is the one accepted exception. It walks by round 4, before our curve has conceded much.
 
-### Held-out LLM buyers (gpt-oss-120b, thinking on, seed 600, run once)
+### Held-out LLM buyers (gpt-oss-120b via Groq, seed 600, run once after freezing)
 
-Gate: overall ≥ baseline and no persona worse than −5.
+Thinking off, except for llm_manipulator. 4 personas × 8 negotiations = 32, each played by both sellers
+against the same cached buyer replies. 388 LLM buyer replies: 0 fallbacks, 0 API errors, 0 bad JSON.
+
+Gate (set before the run): overall ≥ baseline and no persona worse than −5.
 
 | persona | n | ours | baseline | diff |
 |---|---|---|---|---|
-| ho2_budget_swinger (unseen) | 8 | _TBD_ | _TBD_ | _TBD_ |
-| ho2_splitter (unseen) | 8 | _TBD_ | _TBD_ | _TBD_ |
-| llm_hard | 8 | _TBD_ | _TBD_ | _TBD_ |
-| llm_manipulator | 8 | _TBD_ | _TBD_ | _TBD_ |
-| **overall** | 32 | _TBD_ | _TBD_ | _TBD_ |
+| ho2_budget_swinger (unseen) | 8 | 71.0 | 58.5 | +12.5 |
+| ho2_splitter (unseen) | 8 | 45.8 | 38.5 | +7.3 |
+| llm_hard | 8 | 46.9 | 54.3 | **−7.3** |
+| llm_manipulator | 8 | 66.4 | 64.9 | +1.5 |
+| **overall** | 32 | **57.5** | **54.0** | **+3.5** |
 
-_Run in progress. Output: `bench/results/heldout2_oss_s600.txt`._
+- Violations: 0 policy and 0 truth, for both. Deadlocks: 0 for both. Deals: 25 each.
+- **The gate failed** on llm_hard (−7.3, past −5); overall passed. Per our pre-committed rule, v3 ships
+  unchanged: no parameters were changed from held-out results. The transcripts show no bug; llm_hard
+  loses for the known fast-walker reason (it leaves before our curve has conceded much, as with
+  early_walker above). With n = 8 per persona, these differences are noisy.
+- Source: `bench/results/heldout2_oss_s600.{txt,jsonl}`.
