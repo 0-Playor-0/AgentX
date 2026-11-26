@@ -8,8 +8,15 @@ anything the store's data doesn't support.
   [AGENT_CARD.md](AGENT_CARD.md).
 - `kit/`: the official starter kit, unmodified. Re-download it before the final run.
 - `bench/`: rule-based and LLM test buyers, sweeps and results (`bench/results/`).
-- `demo/replay.html`: a static viewer for three example negotiations. Rebuild it with
-  `python demo/build_replay.py <log>`.
+- `demo/replay.html`: the demo-video viewer (single self-contained file, works from `file://`): three
+  story replays (chat, live price chart, controls) and a results card. Every number comes from the logs:
+  ```
+  python kit/evaluate.py --seller seller/agent.py --log logs/transcripts.jsonl
+  python kit/evaluate.py --log logs/baseline.jsonl
+  python demo/build_replay.py logs/transcripts.jsonl --baseline logs/baseline.jsonl [--heldout bench/results/heldout2_oss_s600.jsonl]
+  ```
+  Keys: Space play/pause, ←/→ step, F fullscreen, Esc back. Deep links: `#story=neg-009&step=end`,
+  `#view=results`. Screenshots at 1920×1080: `demo/screenshots/`.
 - `tests/`: property tests and fuzzing. Run with `python -m unittest discover -s tests`.
 
 ```
