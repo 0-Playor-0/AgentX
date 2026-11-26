@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"request\",\"items\":[{\"sku\":\"S090\",\"qty\":1,\"unit_price\":1700},{\"sku\":\"S054\",\"qty\":1,\"unit_price\":1690}],\"text\":\"We would like to purchase 1 Strydo Surge Running Shoes (Blue) and 1 Zentrail Training Track Pants (Black). Our opening offer is ₹1,700 per shoe and ₹1,690 per pant, totaling ₹3,390.\"}", "model": "openai/gpt-oss-120b"}

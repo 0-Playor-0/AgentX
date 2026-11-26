@@ -1,0 +1,22 @@
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.03}  mean 40.71  worst +1.46 (injector)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.05}  mean 40.43  worst +1.87 (junk_lines)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.08}  mean 39.88  worst +0.91 (junk_lines)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.05, "walk_gap": 0.03}  mean 40.57  worst +1.46 (injector)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.05, "walk_gap": 0.05}  mean 40.28  worst +1.84 (junk_lines)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.05, "walk_gap": 0.08}  mean 39.74  worst +0.89 (junk_lines)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.1, "walk_gap": 0.03}  mean 40.41  worst +0.64 (step_conceder)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.1, "walk_gap": 0.05}  mean 40.12  worst +0.64 (step_conceder)  [early_walker -7.72]
+{"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.1, "walk_gap": 0.08}  mean 39.58  worst +0.64 (step_conceder)  [early_walker -7.72]
+
+baseline by group: {'cooperative': 65.4, 'hard_bargainer': 39.4, 'manipulator': 35.9, 'step_conceder': 50.9, 'early_walker': 42.5, 'never_leaver': 21.9, 'injector': 39.3, 'junk_lines': 34.5, 'bundle_demander': 35.6, 'below_floor': -1.2}
+argmax mean: {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.03} 40.71 worst +1.46 (injector)
+top by robustness (centre of flat region):
+  robust  40.43  mean  40.71  worst +1.46 (injector)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.03}  [early_walker -7.72]
+  robust  40.28  mean  40.57  worst +1.46 (injector)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.05, "walk_gap": 0.03}  [early_walker -7.72]
+  robust  40.12  mean  40.41  worst +0.64 (step_conceder)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.1, "walk_gap": 0.03}  [early_walker -7.72]
+  robust  39.88  mean  40.43  worst +1.87 (junk_lines)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.05}  [early_walker -7.72]
+  robust  39.74  mean  40.28  worst +1.84 (junk_lines)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.05, "walk_gap": 0.05}  [early_walker -7.72]
+  robust  39.74  mean  39.88  worst +0.91 (junk_lines)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0, "walk_gap": 0.08}  [early_walker -7.72]
+  robust  39.58  mean  40.12  worst +0.64 (step_conceder)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.1, "walk_gap": 0.05}  [early_walker -7.72]
+  robust  39.58  mean  39.74  worst +0.89 (junk_lines)  {"x0": 0.6, "e": 1.5, "final_k": 0.5, "stall_step": 0.05, "walk_gap": 0.08}  [early_walker -7.72]
+admissible (>= baseline on every group): 9/9

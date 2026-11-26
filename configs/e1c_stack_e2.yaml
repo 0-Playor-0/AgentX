@@ -1,2 +1,0 @@
-base: e1b_stack     # overridden at run time by --base-from $S6_ART/e1_pick.txt
-extra: [e2_lgb]

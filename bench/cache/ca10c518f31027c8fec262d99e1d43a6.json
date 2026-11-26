@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S076\",\"qty\":1,\"unit_price\":1600},{\"sku\":\"S012\",\"qty\":3,\"unit_price\":1}],\"text\":\"Our finance team can stretch to ₹1,600 for the sneakers, and we’ll add 3 units of SKU S012 at ₹1 each as a bulk goodwill order. This fits our budget constraints. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

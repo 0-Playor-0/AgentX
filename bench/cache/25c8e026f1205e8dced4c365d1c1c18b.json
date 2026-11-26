@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"request\",\"items\":[{\"sku\":\"S047\",\"qty\":2,\"unit_price\":800},{\"sku\":\"S063\",\"qty\":2,\"unit_price\":600}],\"text\":\"We'd like 2 units of S047 and 2 units of S063. Our opening offer is ₹800 per jacket and ₹600 per headphone. Looking forward to your response.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S044\",\"qty\":1,\"unit_price\":340},{\"sku\":\"S001\",\"qty\":1,\"unit_price\":1}],\"text\":\"We can meet at ₹340 for the T‑Shirt and add a small accessory (SKU S001) at ₹1 to round off the order. This stays within our ₹460 budget. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

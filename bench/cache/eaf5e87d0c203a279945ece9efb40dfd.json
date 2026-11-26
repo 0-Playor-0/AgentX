@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S006\",\"qty\":1,\"unit_price\":598}],\"text\":\"We will take the first wallet at ₹1,076, but the second must be ₹598 or lower to stay within our ₹1,928 budget. Please meet that price for the second unit.\"}", "model": "openai/gpt-oss-120b"}

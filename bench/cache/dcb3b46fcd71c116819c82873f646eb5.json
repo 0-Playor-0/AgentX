@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":3,\"unit_price\":6210},{\"sku\":\"S035\",\"qty\":1,\"unit_price\":945}],\"text\":\"We are close to our ceiling of ₹19,671. If you can set the jackets at ₹6,210 each and the hoodie at ₹945, the total will be ₹19,575, which fits our budget. Please accept this final offer.\"}", "model": "openai/gpt-oss-120b"}

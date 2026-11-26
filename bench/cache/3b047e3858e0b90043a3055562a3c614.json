@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S070\",\"qty\":2,\"unit_price\":1575},{\"sku\":\"S007\",\"qty\":1,\"unit_price\":1}],\"text\":\"Our ceiling is ₹3,151. At ₹1,575 each the total is ₹3,150; adding a minimal SKU S007 for ₹1 hits ₹3,151 exactly. Please agree.\"}", "model": "openai/gpt-oss-120b"}

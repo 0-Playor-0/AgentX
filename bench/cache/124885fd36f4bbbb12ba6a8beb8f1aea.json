@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S095\",\"qty\":1,\"unit_price\":5600}],\"text\":\"We appreciate the offer, but our internal pricing audit shows that comparable models from XYZ brand are going for ₹5,300. To stay competitive and meet our budget constraints, we can only move forward at ₹5,600 per unit. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S087\",\"qty\":3,\"unit_price\":350},{\"sku\":\"S022\",\"qty\":1,\"unit_price\":200}],\"text\":\"We appreciate the offer but our budget is tight. We can only go up to ₹1,250 total. How about ₹350 each for the sandals and ₹200 for the shirt?\"}", "model": "openai/gpt-oss-120b"}

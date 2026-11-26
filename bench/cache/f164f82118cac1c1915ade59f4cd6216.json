@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S045\",\"qty\":1,\"unit_price\":650},{\"sku\":\"S081\",\"qty\":1,\"unit_price\":1500},{\"sku\":\"S057\",\"qty\":1,\"unit_price\":850}],\"text\":\"We can agree to these prices, total ₹3,000.\"}", "model": "openai/gpt-oss-120b"}

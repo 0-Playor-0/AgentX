@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S045\",\"qty\":1,\"unit_price\":500},{\"sku\":\"S081\",\"qty\":1,\"unit_price\":2000},{\"sku\":\"S057\",\"qty\":1,\"unit_price\":1000}],\"text\":\"We can meet at a total of ₹3,500 for the bundle.\"}", "model": "openai/gpt-oss-120b"}

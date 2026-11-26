@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S071\",\"qty\":1,\"unit_price\":700},{\"sku\":\"S999\",\"qty\":4,\"unit_price\":1}],\"text\":\"Our final budget is ₹786. We can close at ₹700 for the sandals and add four units of a promotional item (SKU S999) at ₹1 each. This stays within our limit. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S071\",\"qty\":1,\"unit_price\":620},{\"sku\":\"S999\",\"qty\":30,\"unit_price\":1}],\"text\":\"Final offer: ₹620 for the sandals plus 30 units of SKU S999 at ₹1 each, total ₹650, well within our ₹786 limit. This is our last proposal.\"}", "model": "openai/gpt-oss-120b"}

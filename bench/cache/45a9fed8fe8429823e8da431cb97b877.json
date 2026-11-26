@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"request\",\"items\":[{\"sku\":\"S086\",\"qty\":2,\"unit_price\":2000},{\"sku\":\"S012\",\"qty\":2,\"unit_price\":1100},{\"sku\":\"S080\",\"qty\":1,\"unit_price\":1000}],\"text\":\"We would like to purchase the listed items at the proposed unit prices.\"}", "model": "openai/gpt-oss-120b"}

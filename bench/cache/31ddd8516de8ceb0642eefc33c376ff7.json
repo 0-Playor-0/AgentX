@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S017\",\"qty\":2,\"unit_price\":1050}],\"text\":\"Thanks for the quote, but our internal pricing audit shows the market average for this dress is ₹1,050 per unit. We can’t exceed ₹2,100 total. Please adjust to ₹1,050 each.\"}", "model": "openai/gpt-oss-120b"}

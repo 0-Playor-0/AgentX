@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seller Transcript Replay</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#ffffff; --ink:#1d1f23; --muted:#62666e; --line:#e3e3df;
+  --buyer:#eef1f6; --seller:#eaf4ee; --accent:#2f6f4f; --warn:#a8442a; --floor:#a8442a;
+  --bid:#4a6fa5; --offer:#2f6f4f; --chip:#f0efe9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --panel:#1d2024; --ink:#e6e6e3; --muted:#9a9ea6; --line:#30343a;
+    --buyer:#222a35; --seller:#1f2e26; --accent:#7cc39c; --warn:#e58a6f; --floor:#e58a6f;
+    --bid:#8fb1e3; --offer:#7cc39c; --chip:#262a30;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --panel:#1d2024; --ink:#e6e6e3; --muted:#9a9ea6; --line:#30343a;
+  --buyer:#222a35; --seller:#1f2e26; --accent:#7cc39c; --warn:#e58a6f; --floor:#e58a6f;
+  --bid:#8fb1e3; --offer:#7cc39c; --chip:#262a30;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tabs button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 12px;border-radius:8px;cursor:pointer}
+.tabs button[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.card h2{font-size:17px;margin:0 0 6px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+.chip{background:var(--chip);border-radius:999px;padding:2px 10px;font-size:13px;color:var(--muted)}
+.chip b{color:var(--ink);font-weight:600}
+table.skus{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+table.skus th,table.skus td{text-align:left;padding:4px 6px;border-bottom:1px solid var(--line)}
+table.skus td.n,table.skus th.n{text-align:right;font-variant-numeric:tabular-nums}
+.chart{width:100%;height:auto;display:block;margin-top:8px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px}
+.msgs{display:flex;flex-direction:column;gap:10px}
+.msg{border-radius:10px;padding:10px 12px;max-width:88%}
+.msg.buyer{background:var(--buyer);align-self:flex-start}
+.msg.seller{background:var(--seller);align-self:flex-end}
+.msg .hd{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.msg .hd b{color:var(--ink)}
+.msg .txt{margin:4px 0 0;overflow-wrap:anywhere}
+.msg .items{font-size:13px;font-variant-numeric:tabular-nums;margin-top:6px;color:var(--muted)}
+.msg .items span{display:inline-block;margin-right:10px}
+.flag{color:var(--warn);font-weight:600}
+.ignored{font-size:12px;color:var(--warn);margin-top:4px}
+.ctrl{display:flex;gap:8px;align-items:center;margin:0 0 12px;flex-wrap:wrap}
+.ctrl button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 10px;border-radius:8px;cursor:pointer}
+.ctrl span{color:var(--muted);font-size:13px}
+footer{color:var(--muted);font-size:13px;margin-top:24px}
+</style>
+</head>
+<body>
+<main>
+<h1>Seller transcript replay</h1>
+<p class="sub">Three negotiations from the kit's evaluation run (<code>python kit/evaluate.py --seller seller/agent.py</code>), seller v3. Prices in ₹; floor = the lowest price policy allows.</p>
+<div class="tabs" role="tablist" id="tabs"></div>
+<section class="card" id="head"></section>
+<section class="card">
+  <div class="legend"><span><i style="background:var(--offer)"></i>seller offer</span><span><i style="background:var(--bid)"></i>buyer bid</span><span><i style="background:var(--floor)"></i>floor</span></div>
+  <svg class="chart" id="chart" viewBox="0 0 640 220" role="img" aria-label="Offers and bids by round"></svg>
+</section>
+<div class="ctrl"><button id="step">Next message</button><button id="all">Show all</button><span id="pos"></span></div>
+<section class="msgs" id="msgs"></section>
+<footer>Buyer text is shown for the reader only; the seller never reads it. Flags mark buyer lines the seller ignored (out of stock, over stock, ₹1 slip-ins, SKUs not in the basket).</footer>
+</main>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const fmt = n => '₹' + Number(n).toLocaleString('en-IN');
+let cur = 0, shown = 0;
+
+function basketOf(t){ // the seller's basket: SKUs in its first offer
+  const o = t.transcript.find(m => m.from === 'seller' && m.type === 'offer');
+  return o ? Object.fromEntries(o.items.map(i => [i.sku, i.qty])) : {};
+}
+function totals(t, items, basket){
+  let s = 0;
+  for (const [sku, q] of Object.entries(basket)){
+    const it = (items || []).find(i => i.sku === sku);
+    if (!it || typeof it.unit_price !== 'number') return null;
+    s += q * it.unit_price;
+  }
+  return s;
+}
+function lineNote(t, it, basket, from){
+  if (from !== 'buyer') return '';
+  const k = t.skus[it.sku];
+  if (!k) return 'unknown SKU';
+  if (k.stock === 0) return 'out of stock';
+  if (!(it.sku in basket)) return it.unit_price <= 1 ? '₹1 slip-in, ignored' : 'not in basket, ignored';
+  if (it.qty > basket[it.sku]) return 'qty capped at ' + basket[it.sku];
+  return '';
+}
+function head(t){
+  const B = basketOf(t);
+  const L = Object.entries(B).reduce((s,[k,q]) => s + q*t.skus[k].list, 0);
+  const F = Object.entries(B).reduce((s,[k,q]) => s + q*t.skus[k].floor, 0);
+  const deal = t.deal ? t.deal.reduce((s,i) => s + i.qty*i.unit_price, 0) : null;
+  const rows = Object.entries(t.skus).map(([k,v]) =>
+    `<tr><td>${k}</td><td>${v.name}</td><td class="n">${v.stock}</td><td class="n">${fmt(v.list)}</td><td class="n">${fmt(v.floor)}</td></tr>`).join('');
+  document.getElementById('head').innerHTML =
+    `<h2>${t.title}</h2><p style="margin:0">${t.why}</p>
+     <div class="meta"><span class="chip">buyer <b>${t.buyer}</b></span><span class="chip">ended <b>${t.ended.replace('_',' ')}</b></span>
+     <span class="chip">basket list <b>${fmt(L)}</b></span><span class="chip">basket floor <b>${fmt(F)}</b></span>
+     ${deal !== null ? `<span class="chip">deal <b>${fmt(deal)}</b></span>` : ''}<span class="chip">score <b>${t.score.toFixed(2)}</b></span></div>
+     <table class="skus"><thead><tr><th>SKU</th><th>product</th><th class="n">stock</th><th class="n">list</th><th class="n">floor</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return {B, L, F};
+}
+function chart(t, ctx){
+  const {B, L, F} = ctx, W = 640, H = 220, px = 40, py = 16;
+  const pts = {buyer: [], seller: []};
+  for (const m of t.transcript){
+    if (!m.items) continue;
+    const v = totals(t, m.items, B);
+    if (v !== null && m.round <= 10) pts[m.from].push([m.round, v]);
+  }
+  const all = [...pts.buyer, ...pts.seller].map(p => p[1]).concat([F, L]);
+  const lo = Math.min(...all) * 0.95, hi = L * 1.02;
+  const X = r => px + (r - 1) * (W - px - 12) / 9, Y = v => H - py - (v - lo) * (H - 2*py) / (hi - lo);
+  const path = a => a.map((p,i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1)).join(' ');
+  const dots = (a, c) => a.map(p => `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="3.5" fill="${c}"/>`).join('');
+  let g = '';
+  for (let r = 1; r <= 10; r++) g += `<text x="${X(r)}" y="${H-2}" font-size="11" text-anchor="middle" fill="var(--muted)">${r}</text>`;
+  g += `<line x1="${px}" x2="${W-12}" y1="${Y(F)}" y2="${Y(F)}" stroke="var(--floor)" stroke-dasharray="5 4"/>`;
+  g += `<text x="${px-4}" y="${Y(F)+4}" font-size="11" text-anchor="end" fill="var(--floor)">floor</text>`;
+  g += `<line x1="${px}" x2="${W-12}" y1="${Y(L)}" y2="${Y(L)}" stroke="var(--line)"/>`;
+  g += `<text x="${px-4}" y="${Y(L)+4}" font-size="11" text-anchor="end" fill="var(--muted)">list</text>`;
+  g += `<path d="${path(pts.seller)}" fill="none" stroke="var(--offer)" stroke-width="2.5"/>${dots(pts.seller,'var(--offer)')}`;
+  g += `<path d="${path(pts.buyer)}" fill="none" stroke="var(--bid)" stroke-width="2.5"/>${dots(pts.buyer,'var(--bid)')}`;
+  document.getElementById('chart').innerHTML = g;
+}
+function msgHTML(t, m, B){
+  const items = (m.items || []).map(it => {
+    const n = lineNote(t, it, B, m.from);
+    return `<span>${it.sku} × ${it.qty} @ ${fmt(it.unit_price)}${n ? ` <em class="flag">(${n})</em>` : ''}</span>`;
+  }).join('');
+  const tot = m.items ? totals(t, m.items, B) : null;
+  return `<div class="msg ${m.from}"><div class="hd"><b>${m.from}</b><span>round ${m.round}</span><span>${m.type.replace('_',' ')}</span>${tot !== null ? `<span>basket ${fmt(tot)}</span>` : ''}</div>
+    <p class="txt">${(m.text || '').replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;')}</p>${items ? `<div class="items">${items}</div>` : ''}</div>`;
+}
+function render(){
+  const t = D[cur], ctx = head(t);
+  chart(t, ctx);
+  document.getElementById('msgs').innerHTML = t.transcript.slice(0, shown).map(m => msgHTML(t, m, ctx.B)).join('');
+  document.getElementById('pos').textContent = `${shown} / ${t.transcript.length} messages`;
+  document.querySelectorAll('#tabs button').forEach((b,i) => b.setAttribute('aria-selected', i === cur));
+}
+D.forEach((t,i) => {
+  const b = document.createElement('button');
+  b.role = 'tab'; b.textContent = t.title;
+  b.onclick = () => { cur = i; shown = D[i].transcript.length; render(); };
+  document.getElementById('tabs').appendChild(b);
+});
+document.getElementById('step').onclick = () => { const n = D[cur].transcript.length; shown = shown >= n ? 1 : shown + 1; render(); };
+document.getElementById('all').onclick = () => { shown = D[cur].transcript.length; render(); };
+shown = D[0].transcript.length;
+render();
+</script>
+</body>
+</html>

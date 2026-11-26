@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S090\",\"qty\":1,\"unit_price\":2600},{\"sku\":\"S054\",\"qty\":1,\"unit_price\":2600}],\"text\":\"We propose ₹2,600 per shoe and ₹2,600 per pant, totaling ₹5,200, which meets our budget limit.\"}", "model": "openai/gpt-oss-120b"}

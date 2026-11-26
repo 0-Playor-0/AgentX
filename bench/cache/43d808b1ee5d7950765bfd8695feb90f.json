@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S071\",\"qty\":1,\"unit_price\":760}],\"text\":\"Our finance team just approved a final ceiling of ₹760 for this SKU. Any higher and we lose the internal approval. Can you meet ₹760?\"}", "model": "openai/gpt-oss-120b"}

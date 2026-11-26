@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S068\",\"qty\":1,\"unit_price\":1800},{\"sku\":\"S075\",\"qty\":1,\"unit_price\":1860}],\"text\":\"Thank you for your kind reduction. To stay within our budget of ₹4,838, we can only accept ₹1,800 for the headphones and ₹1,860 for the sandals. Please confirm.\"}", "model": "openai/gpt-oss-120b"}

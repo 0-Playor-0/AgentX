@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":3,\"unit_price\":6050},{\"sku\":\"S035\",\"qty\":1,\"unit_price\":950}],\"text\":\"That offer still exceeds our cap. We can settle at ₹6,050 each for the jackets and ₹950 for the hoodie, total ₹19,100. Accept this bundle discount.\"}", "model": "openai/gpt-oss-120b"}

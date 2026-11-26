@@ -1,0 +1,374 @@
+{
+ "grid": {
+  "fast_speed": [
+   0.0,
+   0.005,
+   0.01,
+   0.015,
+   0.02
+  ],
+  "fast_R": [
+   4,
+   5
+  ]
+ },
+ "fixed": {
+  "recip": 0,
+  "x0": 0.8,
+  "e": 1.0,
+  "final_k": 0.5,
+  "walk_gap": 0.05,
+  "stall_step": 0.05
+ },
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "baseline": {
+  "cooperative": 65.359073112466,
+  "hard_bargainer": 39.402447775742175,
+  "manipulator": 35.87718902117645,
+  "step_conceder": 50.88431802422788,
+  "early_walker": 42.49653510608747,
+  "never_leaver": 21.9385883654103,
+  "injector": 39.3213595237041,
+  "junk_lines": 34.51849246180033,
+  "bundle_demander": 35.56060397063761,
+  "below_floor": -1.154397223259046
+ },
+ "points": [
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.0,
+    "fast_R": 4
+   },
+   "mean": 39.64629994390277,
+   "worst_diff": -5.030651895910772,
+   "worst_group": "step_conceder",
+   "diffs": {
+    "cooperative": 2.7323826340053188,
+    "hard_bargainer": 0.46494697313193,
+    "manipulator": 2.7937282571658955,
+    "step_conceder": -5.030651895910772,
+    "early_walker": 6.668773252192189,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.235108215575309,
+    "junk_lines": -0.5002025880838019,
+    "bundle_demander": 3.251237204500704,
+    "below_floor": 7.984768084156566
+   },
+   "viol": 0,
+   "robust": -Infinity,
+   "idx": [
+    0,
+    0
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.0,
+    "fast_R": 5
+   },
+   "mean": 39.84962885343087,
+   "worst_diff": -4.032346664078553,
+   "worst_group": "step_conceder",
+   "diffs": {
+    "cooperative": 3.0344260788475736,
+    "hard_bargainer": 0.46494697313193,
+    "manipulator": 2.7937282571658955,
+    "step_conceder": -4.032346664078553,
+    "early_walker": 7.401713670798763,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.235108215575309,
+    "junk_lines": -0.5002025880838019,
+    "bundle_demander": 3.251237204500704,
+    "below_floor": 7.984768084156566
+   },
+   "viol": 0,
+   "robust": -Infinity,
+   "idx": [
+    0,
+    1
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.005,
+    "fast_R": 4
+   },
+   "mean": 40.57013963894029,
+   "worst_diff": -0.11403817855136111,
+   "worst_group": "junk_lines",
+   "diffs": {
+    "cooperative": 2.7721478007594413,
+    "hard_bargainer": 2.4589053688945413,
+    "manipulator": 2.798171714175453,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 6.007426566749118,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.235108215575309,
+    "junk_lines": -0.11403817855136111,
+    "bundle_demander": 3.744565786673803,
+    "below_floor": 7.984768084156566
+   },
+   "viol": 0,
+   "robust": -Infinity,
+   "idx": [
+    1,
+    0
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.005,
+    "fast_R": 5
+   },
+   "mean": 40.672626647282655,
+   "worst_diff": -0.11403817855136111,
+   "worst_group": "junk_lines",
+   "diffs": {
+    "cooperative": 3.0640774655764176,
+    "hard_bargainer": 2.4589053688945413,
+    "manipulator": 2.798171714175453,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 6.740366985355692,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.235108215575309,
+    "junk_lines": -0.11403817855136111,
+    "bundle_demander": 3.744565786673803,
+    "below_floor": 7.984768084156566
+   },
+   "viol": 0,
+   "robust": -Infinity,
+   "idx": [
+    1,
+    1
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.01,
+    "fast_R": 4
+   },
+   "mean": 41.020370991395296,
+   "worst_diff": 1.235108215575309,
+   "worst_group": "injector",
+   "diffs": {
+    "cooperative": 3.211607188188651,
+    "hard_bargainer": 2.5895400206499772,
+    "manipulator": 4.299025251980183,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 4.6814111068473565,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.235108215575309,
+    "junk_lines": 1.5969114909284272,
+    "bundle_demander": 5.782184622567804,
+    "below_floor": 7.993580986245223
+   },
+   "viol": 0,
+   "robust": -Infinity,
+   "idx": [
+    2,
+    0
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.01,
+    "fast_R": 5
+   },
+   "mean": 41.11393409817714,
+   "worst_diff": 1.235108215575309,
+   "worst_group": "injector",
+   "diffs": {
+    "cooperative": 3.426897558846477,
+    "hard_bargainer": 2.5895400206499772,
+    "manipulator": 4.299025251980183,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 5.401751804007922,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.235108215575309,
+    "junk_lines": 1.5969114909284272,
+    "bundle_demander": 5.782184622567804,
+    "below_floor": 7.993580986245223
+   },
+   "viol": 0,
+   "robust": -Infinity,
+   "idx": [
+    2,
+    1
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.015,
+    "fast_R": 4
+   },
+   "mean": 41.08878093665139,
+   "worst_diff": 1.7081608949333429,
+   "worst_group": "junk_lines",
+   "diffs": {
+    "cooperative": 4.032013172019759,
+    "hard_bargainer": 2.5895400206499772,
+    "manipulator": 4.968583753888602,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 2.8198226365485795,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.9176972599687474,
+    "junk_lines": 1.7081608949333429,
+    "bundle_demander": 5.818434416603068,
+    "below_floor": 8.21921618093178
+   },
+   "viol": 0,
+   "robust": 40.88017106685614,
+   "idx": [
+    3,
+    0
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.015,
+    "fast_R": 5
+   },
+   "mean": 41.164895441835995,
+   "worst_diff": 1.7081608949333429,
+   "worst_group": "junk_lines",
+   "diffs": {
+    "cooperative": 4.07474738400083,
+    "hard_bargainer": 2.5895400206499772,
+    "manipulator": 4.968583753888602,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 3.5382334764135095,
+    "never_leaver": 12.658699164301066,
+    "injector": 1.9176972599687474,
+    "junk_lines": 1.7081608949333429,
+    "bundle_demander": 5.818434416603068,
+    "below_floor": 8.21921618093178
+   },
+   "viol": 0,
+   "robust": 40.95018966737,
+   "idx": [
+    3,
+    1
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.02,
+    "fast_R": 4
+   },
+   "mean": 40.88017106685614,
+   "worst_diff": 0.32490919681197283,
+   "worst_group": "early_walker",
+   "diffs": {
+    "cooperative": 4.291867922088372,
+    "hard_bargainer": 2.5895400206499772,
+    "manipulator": 4.968583753888602,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 0.32490919681197283,
+    "never_leaver": 11.971433013848472,
+    "injector": 2.643724116766535,
+    "junk_lines": 1.7081608949333429,
+    "bundle_demander": 5.818434416603068,
+    "below_floor": 8.329415466302098
+   },
+   "viol": 0,
+   "robust": 40.88017106685614,
+   "idx": [
+    4,
+    0
+   ]
+  },
+  {
+   "params": {
+    "recip": 0,
+    "x0": 0.8,
+    "e": 1.0,
+    "final_k": 0.5,
+    "walk_gap": 0.05,
+    "stall_step": 0.05,
+    "fast_speed": 0.02,
+    "fast_R": 5
+   },
+   "mean": 40.95018966737,
+   "worst_diff": 1.0250952019504993,
+   "worst_group": "early_walker",
+   "diffs": {
+    "cooperative": 4.291867922088372,
+    "hard_bargainer": 2.5895400206499772,
+    "manipulator": 4.968583753888602,
+    "step_conceder": 1.951431728675736,
+    "early_walker": 1.0250952019504993,
+    "never_leaver": 11.971433013848472,
+    "injector": 2.643724116766535,
+    "junk_lines": 1.7081608949333429,
+    "bundle_demander": 5.818434416603068,
+    "below_floor": 8.329415466302098
+   },
+   "viol": 0,
+   "robust": 40.88017106685614,
+   "idx": [
+    4,
+    1
+   ]
+  }
+ ]
+}

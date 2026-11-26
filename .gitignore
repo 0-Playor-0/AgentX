@@ -1,8 +1,9 @@
-.venv/
-data/
-artifacts/
+.env
+.env.*
+!.env.example
+bench/cache/
 __pycache__/
-*.zip
+*.pyc
 .DS_Store
-.claude/
-bundle/
+bench/results/smoke_*
+bench/results/*.err

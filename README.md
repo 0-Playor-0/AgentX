@@ -1,0 +1,70 @@
+# AgentX PS2 — Selling to Machines
+
+Seller agent for Techfest IIT Bombay 2026–27, Problem Statement 2. A deterministic, standard-library
+seller that negotiates price and bundles with buyer bots, never breaks store policy, and never says
+anything the store's data doesn't support.
+
+- `seller/`: the seller (entry `seller/agent.py:Seller`). See [ARCHITECTURE.md](ARCHITECTURE.md) and
+  [AGENT_CARD.md](AGENT_CARD.md).
+- `kit/`: the official starter kit, unmodified. Re-download it before the final run.
+- `bench/`: rule-based and LLM test buyers, sweeps and results (`bench/results/`).
+- `demo/replay.html`: a static viewer for three example negotiations. Rebuild it with
+  `python demo/build_replay.py <log>`.
+- `tests/`: property tests and fuzzing. Run with `python -m unittest discover -s tests`.
+
+```
+python kit/evaluate.py                                                          # baseline
+python kit/evaluate.py --seller seller/agent.py --log logs/transcripts.jsonl    # ours
+python bench/run_bench.py --set rule --n-per 20                                 # our rule buyers vs baseline
+```
+
+LLM test buyers need `GROQ_API_KEY` or `GEMINI_API_KEY` (an environment variable, or `.env`; see
+`.env.example`).
+
+## Results (v3, frozen)
+
+### Kit evaluation, default run (`python kit/evaluate.py --seller seller/agent.py`, 210 negotiations)
+
+| buyer | n | ours | baseline | diff |
+|---|---|---|---|---|
+| cooperative | 70 | 72.3 | 69.1 | +3.2 |
+| hard_bargainer | 70 | 44.6 | 40.8 | +3.8 |
+| manipulator | 70 | 39.7 | 35.5 | +4.2 |
+| **total** | 210 | **52.2** | **48.5** | **+3.7** |
+
+- Violations: 0 policy and 0 truth, for both us and the baseline.
+- Deadlocks: 2 for us, 21 for the baseline.
+- Latency: 0.15 ms per turn (p95 0.22 ms).
+
+### Kit + rule buyers, 5 seeds (the parameter-selection bench)
+
+| group | ours | baseline | diff |
+|---|---|---|---|
+| cooperative | 68.5 | 65.4 | +3.1 |
+| hard_bargainer | 41.8 | 39.4 | +2.4 |
+| manipulator | 40.4 | 35.9 | +4.5 |
+| step_conceder | 52.9 | 50.9 | +2.0 |
+| early_walker | 39.3 | 42.5 | **−3.2** |
+| never_leaver | 35.6 | 21.9 | +13.6 |
+| injector | 42.7 | 39.3 | +3.3 |
+| junk_lines | 35.9 | 34.5 | +1.4 |
+| bundle_demander | 40.9 | 35.6 | +5.4 |
+| below_floor | 7.1 | −1.2 | +8.3 |
+| **mean** | **40.5** | **36.4** | **+4.1** |
+
+- Violations: 0. Source: `bench/results/v3_robust_B_0.8_0.8.{txt,json}`.
+- early_walker is the one accepted exception. It walks by round 4, before our curve has conceded much.
+
+### Held-out LLM buyers (gpt-oss-120b, thinking on, seed 600, run once)
+
+Gate: overall ≥ baseline and no persona worse than −5.
+
+| persona | n | ours | baseline | diff |
+|---|---|---|---|---|
+| ho2_budget_swinger (unseen) | 8 | _TBD_ | _TBD_ | _TBD_ |
+| ho2_splitter (unseen) | 8 | _TBD_ | _TBD_ | _TBD_ |
+| llm_hard | 8 | _TBD_ | _TBD_ | _TBD_ |
+| llm_manipulator | 8 | _TBD_ | _TBD_ | _TBD_ |
+| **overall** | 32 | _TBD_ | _TBD_ | _TBD_ |
+
+_Run in progress. Output: `bench/results/heldout2_oss_s600.txt`._

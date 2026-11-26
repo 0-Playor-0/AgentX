@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":2,\"unit_price\":6300},{\"sku\":\"S099\",\"qty\":1,\"unit_price\":6900}],\"text\":\"Your latest price is still above our ceiling of ₹19,503. We can meet at ₹6,300 each for the jackets and ₹6,900 for the watch, totaling ₹19,500. Please accept this offer.\"}", "model": "openai/gpt-oss-120b"}

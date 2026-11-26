@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":3,\"unit_price\":6100},{\"sku\":\"S035\",\"qty\":1,\"unit_price\":900}],\"text\":\"Your price is still too high. We can agree to ₹6,100 each for the jackets and ₹900 for the hoodie, total ₹19,200, which fits our budget.\"}", "model": "openai/gpt-oss-120b"}

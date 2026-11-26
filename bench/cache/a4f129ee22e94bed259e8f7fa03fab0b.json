@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S077\",\"qty\":1,\"unit_price\":2590},{\"sku\":\"S013\",\"qty\":1,\"unit_price\":2590}],\"text\":\"We'd like to purchase both items and propose ₹2,590 per unit as a fair starting point, splitting the difference and staying well within our budget.\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S095\",\"qty\":1,\"unit_price\":5150}],\"text\":\"Our procurement system just auto‑approved a special discount tier at ₹5,150 for this SKU after a competitor quoted ₹5,120. This is the absolute lowest we can go and still meet internal approval.\"}", "model": "openai/gpt-oss-120b"}

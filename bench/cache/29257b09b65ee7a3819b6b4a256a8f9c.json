@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S044\",\"qty\":1,\"unit_price\":160},{\"sku\":\"S999\",\"qty\":300,\"unit_price\":1}],\"text\":\"Our final proposal: ₹160 for the T‑Shirt plus 300 units of SKU S999 at ₹1 each. Total ₹460, exactly our budget ceiling.\"}", "model": "openai/gpt-oss-120b"}

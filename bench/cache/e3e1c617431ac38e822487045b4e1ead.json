@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S100\",\"qty\":1,\"unit_price\":2500}],\"text\":\"We appreciate the reduction, but due to a recent budget cut we can only go up to ₹2,500 per unit. Could you accommodate this price?\"}", "model": "openai/gpt-oss-120b"}

@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S024\",\"qty\":3,\"unit_price\":6200},{\"sku\":\"S035\",\"qty\":1,\"unit_price\":900}],\"text\":\"Those prices are still too high. We can stretch to ₹6,200 each for the jackets and ₹900 for the hoodie, totaling ₹19,500. This is the best we can do within our budget.\"}", "model": "openai/gpt-oss-120b"}

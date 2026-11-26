@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S044\",\"qty\":1,\"unit_price\":340},{\"sku\":\"S002\",\"qty\":5,\"unit_price\":1}],\"text\":\"Our approved ceiling remains ₹340 for the T‑Shirt. We’ll also take five units of SKU S002 at ₹1 each to fill the order. Please honor the ₹340 price.\"}", "model": "openai/gpt-oss-120b"}

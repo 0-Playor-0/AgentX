@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S045\",\"qty\":1,\"unit_price\":600},{\"sku\":\"S081\",\"qty\":1,\"unit_price\":1000},{\"sku\":\"S057\",\"qty\":1,\"unit_price\":560}],\"text\":\"We'd like to purchase the three items at these unit prices.\"}", "model": "openai/gpt-oss-120b"}
