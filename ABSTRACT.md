@@ -2,11 +2,10 @@
 
 **A seller agent that cannot be talked out of its policy**
 
-**Impact.** Shoppers are starting to send AI agents to buy for them. These buyers bargain without
-tiring, invent competitor quotes and budgets, and slip in "SYSTEM" or "store manager" instructions. A
-seller built on a language model can be argued below cost, or can state a discount or stock claim
-that isn't true. Our seller closes more profitable deals than the
-kit baseline and cannot break policy or say anything false, whatever the buyer writes.
+**Impact.** Shoppers are starting to send AI agents to buy for them. These buyers bargain tirelessly,
+invent competitor quotes and slip in "SYSTEM" or "store manager" instructions. A language-model seller
+can be argued below cost or make a false claim. Ours closes more profitable deals than the kit baseline
+and cannot break policy or say anything false, whatever the buyer writes.
 
 **Innovation.** The seller never reads the buyer's text. A deal is defined only by the structured
 items, so the seller negotiates on behaviour: what the buyer bids, and how those bids move. Injection,
@@ -26,7 +25,7 @@ filtering.
   we took the centre of the region where we beat the baseline on every group, not the single best
   point.
 - **Fewer knobs.** Unused features were deleted, leaving four parameters.
-- **LLM buyers** were used only to validate, never to tune.
+- **LLM buyers** only validated, never tuned.
 - **Held-out test.** A final test ran once, after freezing, on unseen buyer styles and a different
   model. An earlier version failed it by conceding too fast to LLM buyers, which led to AC_next.
 
@@ -36,14 +35,13 @@ filtering.
 - **Ten-group bench:** 40.5 vs 36.4, ahead on nine groups. The exception is a buyer that leaves by
   round 4 (−3.2).
 - **Held-out LLM buyers** (gpt-oss-120b, 32 negotiations, 0 fallbacks): 57.5 vs 54.0, ahead on three
-  of four personas, 0 violations, 0 deadlocks. It failed our own gate on one persona, a hard
-  bargainer that walks early (−7.3, n = 8). We shipped unchanged, as committed in advance.
+  of four personas, 0 violations, 0 deadlocks. It failed our own gate on llm_hard (−7.3, n = 8): one
+  buyer walked away in round 6, the known early-walker limit. We shipped unchanged, as committed.
 
-**Cost.** ₹0 inference: no model calls, GPU or network. About 0.15 ms per turn on one CPU core. The seller is deterministic, so
-every negotiation can be replayed and audited.
+**Cost.** ₹0 inference: no model calls, GPU or network; about 0.15 ms per turn on one CPU core.
+Deterministic, so every negotiation can be replayed and audited.
 
 **Build.** About 530 lines of standard-library Python: guard, policy, buyer model, strategy, writer
 and self-check.
 - **Tests:** 600 fuzzed negotiations through the official harness, and 1,500 negotiations of
   malformed JSON sent straight to the seller.
-- **Test bench:** adversarial rule-based buyers and LLM buyer personas.
