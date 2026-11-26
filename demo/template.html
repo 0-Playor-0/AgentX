@@ -187,6 +187,11 @@ kbd{font:inherit;font-size:15px;border:1px solid var(--line);border-bottom-width
 .rrow .diff{font-size:24px;font-weight:700;color:var(--seller);text-align:right}
 .rrow .diff.neg{color:var(--muted)}
 .rrow .diff small{display:block;font-size:14px;color:var(--dim);font-weight:500}
+.rnote{display:grid;grid-template-columns:330px 1fr;gap:8px 24px;margin-top:-6px}
+.rnote .chips{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:17px;color:var(--muted)}
+.rnote .chips b{font-weight:700;color:var(--seller)}
+.rnote .chips b.neg{color:var(--ink)}
+.rnote .why{grid-column:2;font-size:16px;color:var(--dim)}
 .rsep{height:1px;background:var(--line);margin:6px 0}
 .rrow.pending .bars{border:1.5px dashed var(--line);border-radius:12px;height:58px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:18px}
 .zbar{display:inline-block;width:4px;height:100%;background:currentColor;border-radius:2px}
@@ -574,11 +579,21 @@ function buildResults(){
   rows.push({name: "Deadlocks", sub: "lower is better (−0.25 each)", o: o.deadlocks, b: b && b.deadlocks, max: Math.max(o.deadlocks, b ? b.deadlocks : 0, 1) * 1.1, fmt: v => String(v), lower: true});
   rows.push({name: "Policy + truth violations", sub: "lower is better", o: o.violations, b: b && b.violations, max: Math.max(o.violations, b ? b.violations : 0, 1) * 1.1, fmt: v => String(v), lower: true});
   rows.push({sep: true});
-  if (R.heldout) rows.push({name: "Held-out LLM buyers", sub: `${R.heldout.n} negotiations · ${R.heldout.source}`, o: R.heldout.ours, b: R.heldout.base, max: 100, fmt: v => v.toFixed(1), diff: true});
+  if (R.heldout){
+    const H = R.heldout;
+    rows.push({name: "Held-out LLM buyers", sub: `${H.model} · ${H.n} negotiations, run once`, o: H.ours, b: H.base, max: 100, fmt: v => v.toFixed(1), diff: true});
+    if (H.personas && H.personas.length) rows.push({note: H.personas});
+  }
   else rows.push({name: "Held-out LLM buyers", sub: "unseen personas, run once", pending: true});
 
   $("rows").innerHTML = rows.map(r => {
     if (r.sep) return `<div class="rsep"></div>`;
+    if (r.note){
+      const sgn = d => (d >= 0 ? "+" : "−") + Math.abs(d).toFixed(1);
+      const chips = r.note.map(p => { const d = p.ours - p.base; return `<span>${esc(p.name)} <b class="num${d < 0 ? " neg" : ""}">${sgn(d)}</b></span>`; }).join("");
+      const why = r.note.filter(p => p.note).map(p => `${esc(p.name)} ${sgn(p.ours - p.base)}: ${esc(p.note)}.`).join(" ");
+      return `<div class="rnote"><div></div><div class="chips">${chips}</div>${why ? `<div class="why">${why}</div>` : ""}</div>`;
+    }
     if (r.pending) return `<div class="rrow pending"><div class="name">${r.name}<small>${r.sub}</small></div><div class="bars">Result pending — filled in when the run completes</div><div></div></div>`;
     const bar = (cls, v) => v == null ? "" : `<div class="bar ${cls}"><div class="fill" data-w="${Math.max(0, 100*v/r.max)}"></div>${v === 0 ? `<span class="zbar" style="color:${cls === "o" ? "var(--seller)" : "var(--base)"}"></span>` : ""}<span class="v num">${r.fmt(v)}</span></div>`;
     let diff = "";

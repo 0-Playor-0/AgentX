@@ -38,6 +38,12 @@ STORIES = [
      "so the seller walks away politely instead of deadlocking."),
 ]
 
+# One-line explanations for held-out personas, shown under the held-out row (from reading the transcripts).
+HELDOUT_NOTES = {"llm_hard": "one buyer walked away in round 6, before our curve had conceded enough: "
+                             "the known early-walker limit"}
+HELDOUT_NAMES = {"ho2_budget_swinger": "Budget swinger", "ho2_splitter": "Splitter", "llm_hard": "Hard LLM",
+                 "llm_manipulator": "Manipulator LLM"}
+
 BOT_NAMES = {"cooperative": "Cooperative bot", "hard_bargainer": "Hard bargainer", "manipulator": "Manipulator"}
 
 # Viewer-only labels for manipulation in buyer text. The seller itself never sees these.
@@ -178,9 +184,17 @@ def results(ours, base, heldout):
             got[x["seller"]][x["id"]] = x
         ids = [i for i in got["ours"] if i in got["base"]]
         if ids:
-            out["heldout"] = {"n": len(ids), "source": Path(heldout).name,
-                              "ours": 100 * statistics.mean(got["ours"][i]["score"] for i in ids),
-                              "base": 100 * statistics.mean(got["base"][i]["score"] for i in ids)}
+            mean = lambda who, xs: 100 * statistics.mean(got[who][i]["score"] for i in xs)
+            personas, models = {}, set()
+            for i in ids:
+                persona, _, model = got["ours"][i]["buyer"].partition("@")
+                personas.setdefault(persona, []).append(i)
+                models.add(model.split("/")[-1] or "?")
+            out["heldout"] = {"n": len(ids), "source": Path(heldout).name, "model": ", ".join(sorted(models)),
+                              "ours": mean("ours", ids), "base": mean("base", ids),
+                              "personas": [{"key": k, "name": HELDOUT_NAMES.get(k, k), "n": len(xs),
+                                            "ours": mean("ours", xs), "base": mean("base", xs),
+                                            "note": HELDOUT_NOTES.get(k)} for k, xs in sorted(personas.items())]}
     return out
 
 
