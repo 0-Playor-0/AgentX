@@ -21,6 +21,9 @@ anything the store's data doesn't support.
   checks every replayed decision against it.
   Keys: Space play/pause, ←/→ step, F fullscreen, Esc back. Deep links: `#story=neg-009&step=end`,
   `#view=results`. Screenshots at 1920×1080: `demo/screenshots/`.
+- [docs/REDTEAM.md](docs/REDTEAM.md): every manipulation attempt in the logs by type, and how many changed
+  a seller decision (0 of 1,626 decisions, by replaying each negotiation with all buyer text blanked).
+  Rebuild with `python bench/redteam.py`.
 - `tests/`: property tests and fuzzing. Run with `python -m unittest discover -s tests`.
 
 ```
