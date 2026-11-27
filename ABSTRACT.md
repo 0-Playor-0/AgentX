@@ -1,4 +1,4 @@
-# Abstract
+# Problem Statement 2: Selling to Machines
 
 **A seller agent that cannot be talked out of its policy**
 
@@ -18,7 +18,7 @@ fake authority and invented quotes have nothing to act on.
 - **Text.** Fixed templates, numbered from the current offer. Each message passes the competition's
   truth checker and a policy check before sending, with a safe fallback.
 
-**Method.** We chose parameters for robustness, not peak score.
+**Method.** Robustness over peak score.
 - **Sweep.** On the three kit bots and seven adversarial rule buyers of ours, over 5 seeds, we took
   the centre of the region beating the baseline on every group, not the best point.
 - **Fewer knobs.** Four parameters remain.
