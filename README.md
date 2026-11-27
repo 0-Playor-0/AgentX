@@ -48,7 +48,36 @@ LLM test buyers need `GROQ_API_KEY` or `GEMINI_API_KEY` (an environment variable
 
 - Violations: 0 policy and 0 truth, for both us and the baseline.
 - Deadlocks: 2 for us, 21 for the baseline.
-- Latency: 0.15 ms per turn (p95 0.22 ms).
+- Latency: 0.15 ms per turn (p95 0.22 ms). Throughput: 949 negotiations/s on one core (see Cost below).
+
+### Cost and throughput
+
+Measured with `taskset -c 0 python bench/speed.py` (one core, Intel Xeon @ 2.1 GHz, Python 3.13; the kit's
+210 scenarios played 5 times, single-threaded):
+
+- **Seller only:** 949 negotiations/s (0.153 ms per turn, 6.9 seller turns per negotiation).
+- **End to end:** 462 negotiations/s, including the kit buyer bots and the harness's checks.
+
+Cost per 1M negotiations (estimates; the assumptions are listed below the table):
+
+| seller | compute per 1M negotiations | cost per 1M negotiations |
+|---|---|---|
+| **Ours** (deterministic, no model calls) | 0.29 core-hours | **≈ $0.013** |
+| LLM seller, gpt-oss-120b on Groq | 13.8B input + 1.38B output tokens | ≈ $3,100 |
+| LLM seller, GPT-5 mini (OpenAI) | 13.8B input + 1.38B output tokens | ≈ $6,200 |
+
+- **Ours:** 1M ÷ 949/s = 1,054 core-seconds, at $0.0446 per vCPU-hour (AWS EC2 c7i.large on-demand,
+  us-east-1, $0.0893/h for 2 vCPUs; [aws.amazon.com/ec2/pricing/on-demand](https://aws.amazon.com/ec2/pricing/on-demand/)).
+- **LLM seller:** 6.9 turns per negotiation (as measured for ours). Each turn sends about 2,000 input tokens
+  (system prompt, policy, the basket's catalogue rows and the transcript so far) and gets about 200 output
+  tokens back (the JSON offer and message). No reasoning tokens, caching or batch discounts are counted.
+  - gpt-oss-120b on Groq: $0.15 per 1M input and $0.75 per 1M output tokens
+    ([groq.com launch post](https://groq.com/blog/day-zero-support-for-openai-open-models); some trackers
+    list $0.60 output, which gives ≈ $2,900).
+  - GPT-5 mini: $0.25 per 1M input and $2.00 per 1M output tokens ([openai.com/api/pricing](https://openai.com/api/pricing/)).
+- Prices were checked on 27 Nov 2026.
+- On these assumptions an LLM seller costs about 200,000× more per negotiation than ours, before
+  counting its latency or its exposure to the manipulation in [docs/REDTEAM.md](docs/REDTEAM.md).
 
 ### Kit + rule buyers, 5 seeds (the parameter-selection bench)
 
