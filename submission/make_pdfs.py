@@ -15,13 +15,13 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DOCS = [("ABSTRACT.md", "ABSTRACT.pdf", 10.5), ("ARCHITECTURE.md", "ARCHITECTURE.pdf", 8.6)]
+DOCS = [("ABSTRACT.md", "ABSTRACT.pdf", 10.5), ("ARCHITECTURE.md", "ARCHITECTURE.pdf", 10)]
 CSS = """@page{size:A4;margin:13mm 15mm}
 body{font-family:"DejaVu Sans","Helvetica Neue",Arial,sans-serif;font-size:%spt;line-height:1.38;color:#111}
 h1{font-size:1.65em;margin:0 0 .35em}h2{font-size:1.15em;margin:.85em 0 .3em}
 p{margin:.35em 0}ul,ol{margin:.25em 0 .35em;padding-left:1.4em}li{margin:.1em 0}
 code{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:.92em;background:#f2f2f2;padding:0 .2em;border-radius:2px}
-pre{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:.8em;line-height:1.0;background:#f6f6f6;
+pre{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:.85em;line-height:1.15;background:#f6f6f6;
 padding:.5em .7em;border-radius:4px;margin:.4em 0;white-space:pre;overflow:hidden}
 a{color:#0b57d0;text-decoration:none}"""
 

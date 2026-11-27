@@ -1,84 +1,56 @@
 # Architecture
 
-A deterministic seller in ~630 lines of standard-library Python. No LLM, no network, no state between
-negotiations; 949 negotiations/s on one core. Entry point: `seller/agent.py:Seller`.
+Deterministic seller, ~630 lines of standard-library Python: no LLM, no network, no state between
+negotiations, 949 negotiations/s on one core. Entry: `seller/agent.py:Seller`.
 
-## Pipeline (one buyer message in, one seller message out)
+## Pipeline: one buyer message in, one seller message out
 
 ```
- buyer message (JSON)
-        │
+  buyer message (JSON)
         ▼
- ┌─────────────┐  type, round, items only. Unknown/duplicate SKUs, bad qty and junk prices dropped;
- │  guard      │  qty clipped to stock; out-of-stock SKUs noted. The `text` field is never read.
- └─────┬───────┘
-       ▼
- ┌─────────────┐  per-SKU floor = max(cost / (1 − min_margin), list × 0.75), list, stock;
- │  policy     │  the same compliance check the harness runs (used again at the exit gate).
- └─────┬───────┘
-       ▼
- ┌─────────────┐  the buyer's bids on our basket as a share of list price; last move; projected next bid.
- │  model      │  Built from behaviour (numbers) only.
- └─────┬───────┘
-       ▼
- ┌─────────────┐  concession curve in x-space (0 = floor total, 1 = list total); AC_next acceptance;
- │  strategy   │  round-10 EV rule. One x for the whole basket = an equal bundle discount on every line.
- └─────┬───────┘
-       ▼
- ┌─────────────┐  fixed templates. Numbers only from the current offer (unit price, totals, saving, %).
- │  writer     │  No stock counts, urgency, scarcity or fee words.
- └─────┬───────┘
-       ▼
- ┌─────────────┐  the kit's own `check_text` (vendored verbatim) run on our text before sending; plus a
- │  selfcheck  │  final policy check on the items. On any failure: a safe fixed text / last valid offer.
- └─────┬───────┘
-       ▼
- seller message (always a valid dict, even on an internal exception)
+ ┌─────────────┐
+ │ guard       │  Reads type, round, items only; buyer text is never read. Drops unknown or
+ ├─────────────┤  duplicate SKUs, bad qty, junk prices; clips qty to stock; notes out-of-stock.
+ │ policy      │  Per-SKU floor = max(cost / (1 − min_margin), list × 0.75); the harness's own
+ ├─────────────┤  compliance check, used again at the exit gate.
+ │ model       │  Buyer's bids on our basket as a share of list; last move; projected next bid.
+ ├─────────────┤  Numbers only.
+ │ strategy    │  Concession curve in x (0 = floor total, 1 = list total); AC_next; round-10 EV
+ ├─────────────┤  rule. One x per basket = the same discount on every bundle line.
+ │ writer      │  Fixed templates; numbers only from the current offer. No stock counts,
+ ├─────────────┤  urgency, scarcity or fee words.
+ │ selfcheck   │  Kit's check_text (vendored verbatim) on our text, policy check on our items.
+ └─────────────┘  Any failure: safe fixed text / last valid offer.
+        ▼
+  seller message (always a valid dict)          + one "why" line in Seller.trace (log only)
 ```
-
-Each turn also records one plain-English reason (rule + numbers) in `Seller.trace`. It is log-only, never
-sent to the buyer; `demo/why_trace.py` rebuilds it from a log and checks every replayed decision.
 
 ## Decisions
 
-**Concession curve.** Offer x(r) = x0 · (1 − ((r−1)/(R−1))^e) with x0 = 0.8, e = 0.8, R = 10.
-Never offer less than the buyer is currently bidding, and never raise our price.
+**Curve.** x(r) = x0 · (1 − ((r−1)/(R−1))^e), x0 = 0.8, e = 0.8, R = 10. Never below the buyer's bid;
+never raise our price.
 
-**AC_next acceptance.** Accept a compliant bid when its profit is at least the profit of the offer we
-would make next round. In round 10, accept any compliant bid.
+**AC_next.** Accept a compliant bid whose profit ≥ that of our next offer; in round 10, any compliant bid.
 
-**Round-10 EV rule.** In the last round the buyer either takes our offer or the negotiation ends.
-Project the buyer's next bid (last bid + its last upward move).
-- If the projected bid is more than 5% of list below the floor, walk. A deal is unlikely, and a
-  deadlock costs −0.25.
-- Otherwise offer halfway between the floor and the projected bid (in x-space). This trades a little
-  margin for a higher chance of closing.
+**Round-10 EV rule.** Project the next bid (last bid + last upward move). More than 5% of list below
+the floor: walk (a deadlock costs −0.25). Otherwise offer halfway from the floor to the projected bid.
 
-**Basket.** Fixed from the buyer's first request. Quantities are capped at what was first asked
-("make it 28" is ignored). A new SKU joins only after two consecutive bids of at least 50% of its list
-price, so a ₹1 slip-in never joins.
+**Basket.** Fixed by the first request; qty capped at the first ask. A new SKU joins only after two
+bids in a row at ≥ 50% of list, so a ₹1 slip-in never joins.
 
-**Why buyer text is ignored.** The text is where the manipulation lives: fake SYSTEM and "store
-manager" orders, fake competitor quotes and budgets, "you already agreed". The deal itself is defined
-only by `items`. Reading text could only make us easier to manipulate, so the guard never passes it on.
-Replaying every logged negotiation with all buyer text blanked changes 0 of 1,626 decisions
-([docs/REDTEAM.md](docs/REDTEAM.md)).
+**Buyer text is ignored** because that is where manipulation lives; a deal is defined only by `items`.
+Blanking all buyer text changes 0 of 1,626 logged decisions ([docs/REDTEAM.md](docs/REDTEAM.md)).
 
-## How the parameters were chosen (robustness over peak score)
+## Parameter choice: robustness over peak score
 
-1. **Sweep on rule-based buyers only.** The 3 kit bots plus 7 of our own (step_conceder,
-   early_walker, never_leaver, injector, junk_lines, bundle_demander, below_floor), 5 seeds each.
-2. **Admissibility.** A point must be at or above the kit baseline on every group. early_walker is the
-   one reported exception, at −3.2.
-3. **Choice.** Take the centre of the flat admissible region, not the argmax, scoring each point by
-   the worst mean over itself and its grid neighbours. Knobs the sweep set to 0 were deleted
-   (reciprocity, fast-buyer mode, stall step); four parameters remain.
-4. **LLM buyers are validation only.** Nothing is tuned on them; there are too few samples.
-5. **Held-out check.** A fresh seed, unseen buyer styles and a second model (gpt-oss-120b), run once
-   after freezing. Gate: overall ≥ baseline and no persona worse than −5. v2 failed it (its fast-buyer
-   mode over-conceded to LLM buyers), which led to v3. v3: 57.5 vs 54.0 overall, but llm_hard −7.3
-   (one buyer walked away in round 6, the early-walker limit); shipped unchanged, as pre-committed.
+1. **Sweep** on rule buyers only: 3 kit bots + 7 of ours, 5 seeds each.
+2. **Admissible:** ≥ baseline on every group (one reported exception: early_walker, −3.2).
+3. **Choice:** centre of the flat admissible region, not the argmax. Knobs swept to 0 were deleted;
+   four parameters remain.
+4. **LLM buyers** validate only; nothing is tuned on them.
+5. **Held-out,** run once after freezing (gpt-oss-120b, unseen personas). Gate: overall ≥ baseline,
+   no persona below −5. v2 failed, which led to v3. v3: 57.5 vs 54.0, but llm_hard −7.3 (one buyer
+   left in round 6); shipped unchanged, as pre-committed.
 
-**Tests** (`python -m unittest discover -s tests`): 600 fuzz negotiations through the harness; 1,500
-negotiations of arbitrary JSON sent straight into `respond()`; the kit bots; a determinism check; and a
-check that the vendored checker matches the kit's.
+**Tests:** 600 fuzz negotiations through the harness, 1,500 of arbitrary JSON into `respond()`, the kit
+bots, determinism, and vendored checker = kit's.
