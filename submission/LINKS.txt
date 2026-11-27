@@ -1,0 +1,5 @@
+AgentX: The Agentic Commerce Challenge — Problem Statement 2: Selling to Machines
+Team: TechonAI · Team ID: TM-B39C2041A92 · Competition ID: AX-1D8DCEE9ABA8
+Code: https://github.com/0-Playor-0/AgentX
+Reproduce: python3 kit/evaluate.py --seller seller/agent.py
+Demo viewer: open demo/replay.html in a browser
