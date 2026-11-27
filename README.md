@@ -24,6 +24,7 @@ anything the store's data doesn't support.
 - [docs/REDTEAM.md](docs/REDTEAM.md): every manipulation attempt in the logs by type, and how many changed
   a seller decision (0 of 1,626 decisions, by replaying each negotiation with all buyer text blanked).
   Rebuild with `python bench/redteam.py`.
+- `submission/`: ABSTRACT.pdf and ARCHITECTURE.pdf (one page each), built by `python submission/make_pdfs.py`.
 - `tests/`: property tests and fuzzing. Run with `python -m unittest discover -s tests`.
 
 ```
