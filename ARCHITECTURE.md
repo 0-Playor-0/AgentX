@@ -50,7 +50,7 @@ Blanking all buyer text changes 0 of 1,626 logged decisions ([docs/REDTEAM.md](d
 4. **LLM buyers** validate only; nothing is tuned on them.
 5. **Held-out,** run once after freezing (gpt-oss-120b, unseen personas). Gate: overall ≥ baseline,
    no persona below −5. v2 failed, which led to v3. v3: 57.5 vs 54.0, but llm_hard −7.3 (one buyer
-   left in round 6); shipped unchanged, as pre-committed.
+   left in round 6); no parameters were retuned on held-out results.
 
 **Tests:** 600 fuzz negotiations through the harness, 1,500 of arbitrary JSON into `respond()`, the kit
 bots, determinism, and vendored checker = kit's.
