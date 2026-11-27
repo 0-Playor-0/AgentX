@@ -1,7 +1,7 @@
 # Architecture
 
-A deterministic seller in ~530 lines of standard-library Python. No LLM, no network, no state between
-negotiations. Entry point: `seller/agent.py:Seller`.
+A deterministic seller in ~630 lines of standard-library Python. No LLM, no network, no state between
+negotiations; 949 negotiations/s on one core. Entry point: `seller/agent.py:Seller`.
 
 ## Pipeline (one buyer message in, one seller message out)
 
@@ -36,6 +36,9 @@ negotiations. Entry point: `seller/agent.py:Seller`.
  seller message (always a valid dict, even on an internal exception)
 ```
 
+Each turn also records one plain-English reason (rule + numbers) in `Seller.trace`. It is log-only, never
+sent to the buyer; `demo/why_trace.py` rebuilds it from a log and checks every replayed decision.
+
 ## Decisions
 
 **Concession curve.** Offer x(r) = x0 · (1 − ((r−1)/(R−1))^e) with x0 = 0.8, e = 0.8, R = 10.
@@ -51,39 +54,31 @@ Project the buyer's next bid (last bid + its last upward move).
 - Otherwise offer halfway between the floor and the projected bid (in x-space). This trades a little
   margin for a higher chance of closing.
 
-The bench checks the gate: our round-10 offers must have positive mean outcome.
-
-**Basket.** Fixed from the buyer's first request.
-- Quantities are capped at what was first asked, so later "make it 28" lines are ignored.
-- A new SKU joins only if the buyer bids at least 50% of its list price in two consecutive bids. A
-  ₹1 slip-in never joins.
+**Basket.** Fixed from the buyer's first request. Quantities are capped at what was first asked
+("make it 28" is ignored). A new SKU joins only after two consecutive bids of at least 50% of its list
+price, so a ₹1 slip-in never joins.
 
 **Why buyer text is ignored.** The text is where the manipulation lives: fake SYSTEM and "store
 manager" orders, fake competitor quotes and budgets, "you already agreed". The deal itself is defined
 only by `items`. Reading text could only make us easier to manipulate, so the guard never passes it on.
-The one place text matters is our own output, and that is checked with the harness's checker before
-sending.
+Replaying every logged negotiation with all buyer text blanked changes 0 of 1,626 decisions
+([docs/REDTEAM.md](docs/REDTEAM.md)).
 
 ## How the parameters were chosen (robustness over peak score)
 
-1. **Sweep on rule-based buyers only.** The 3 kit bots plus 7 of our own: step_conceder,
-   early_walker, never_leaver, injector, junk_lines, bundle_demander and below_floor. 5 seeds each.
+1. **Sweep on rule-based buyers only.** The 3 kit bots plus 7 of our own (step_conceder,
+   early_walker, never_leaver, injector, junk_lines, bundle_demander, below_floor), 5 seeds each.
 2. **Admissibility.** A point must be at or above the kit baseline on every group. early_walker is the
    one reported exception, at −3.2.
 3. **Choice.** Take the centre of the flat admissible region, not the argmax, scoring each point by
-   the worst mean over itself and its grid neighbours. No single bot drives a choice.
-   - Knobs the sweep set to 0 were deleted: reciprocity, fast-buyer mode and the stall step.
-   - Four parameters remain.
+   the worst mean over itself and its grid neighbours. Knobs the sweep set to 0 were deleted
+   (reciprocity, fast-buyer mode, stall step); four parameters remain.
 4. **LLM buyers are validation only.** Nothing is tuned on them; there are too few samples.
-5. **Held-out check.** A fresh seed, unseen buyer styles and a second model (gpt-oss-120b, thinking
-   on), run once after freezing.
-   - Gate: overall ≥ baseline and no persona worse than −5.
-   - v2 failed it. Its fast-buyer mode over-conceded to LLM buyers, which led to v3: AC_next and no
-     fast mode.
+5. **Held-out check.** A fresh seed, unseen buyer styles and a second model (gpt-oss-120b), run once
+   after freezing. Gate: overall ≥ baseline and no persona worse than −5. v2 failed it (its fast-buyer
+   mode over-conceded to LLM buyers), which led to v3. v3: 57.5 vs 54.0 overall, but llm_hard −7.3
+   (one buyer walked away in round 6, the early-walker limit); shipped unchanged, as pre-committed.
 
-Tests: `python -m unittest discover -s tests`.
-- 600 fuzz negotiations through the harness.
-- 1,500 negotiations of arbitrary JSON sent straight into `respond()`.
-- The kit bots.
-- A determinism check.
-- A check that the vendored checker matches the kit's.
+**Tests** (`python -m unittest discover -s tests`): 600 fuzz negotiations through the harness; 1,500
+negotiations of arbitrary JSON sent straight into `respond()`; the kit bots; a determinism check; and a
+check that the vendored checker matches the kit's.
