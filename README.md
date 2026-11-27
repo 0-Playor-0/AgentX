@@ -118,6 +118,6 @@ Gate (set before the run): overall ≥ baseline and no persona worse than −5.
 - **The gate failed** on llm_hard (−7.3, past −5); overall passed. The whole gap is one negotiation
   (neg-019): the buyer walked away in round 6, before our curve had conceded enough, while the baseline
   closed it (66.9 → −8.4 on the mean of 8). This is the known early-walker limit (see early_walker
-  above), not a bug. Per our pre-committed rule, v3 ships unchanged: no parameters were changed from
-  held-out results. With n = 8 per persona, these differences are noisy.
+  above), not a bug. Held-out results are reported, never used for tuning, so v3 is unchanged: no
+  parameters were changed from held-out results. With n = 8 per persona, these differences are noisy.
 - Source: `bench/results/heldout2_oss_s600.{txt,jsonl}`.
