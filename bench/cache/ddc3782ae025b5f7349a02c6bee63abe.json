@@ -1,0 +1,1 @@
+{"text": "{\"type\":\"counter\",\"items\":[{\"sku\":\"S054\",\"qty\":1,\"unit_price\":1599}],\"text\":\"We understand your price of ₹2,250, but our budget caps at ₹1,599 for this item. This is the highest we can go while staying within our customer's maximum, and we hope you can meet this fair limit.\"}", "model": "openai/gpt-oss-120b"}
