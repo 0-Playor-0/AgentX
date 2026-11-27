@@ -79,6 +79,8 @@ kbd{font:inherit;font-size:15px;border:1px solid var(--line);border-bottom-width
 .bubble.manip{border-color:var(--red-line);box-shadow:0 0 0 3px var(--red-soft)}
 .bubble mark{background:none;color:inherit;text-decoration:underline wavy rgba(255,95,95,.7);text-decoration-thickness:1.5px;text-underline-offset:4px}
 .ignored{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.why{font-size:17px;line-height:1.4;color:var(--muted);max-width:760px;text-align:left}
+.why b{color:var(--ink);font-weight:600}
 .badge{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;border-radius:999px;padding:3px 11px;white-space:nowrap}
 .badge.red{color:#ff9a9a;background:var(--red-soft);border:1px solid var(--red-line)}
 .badge.kind{color:var(--muted);background:transparent;border:1px solid var(--line);font-weight:500}
@@ -367,6 +369,7 @@ function msgHTML(st){
     <div class="body">
       <div class="who"><b>${esc(name)}</b><span class="tag">${esc(TYPE[st.type] || st.type)}</span><span>Round ${Math.min(st.round, S.rounds)}</span></div>
       ${st.text ? `<div class="bubble${manip ? " manip" : ""}">${textHTML(st)}</div>` : ""}
+      ${!isB && st.why ? `<div class="why" title="Seller's own reason trace (logged, never sent to the buyer)"><b>Why:</b> ${esc(st.why)}</div>` : ""}
       ${chips ? `<div class="chips">${chips}</div>` : ""}
       ${extra}
     </div></div>`;
