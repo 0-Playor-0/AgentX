@@ -15,6 +15,10 @@ anything the store's data doesn't support.
   python kit/evaluate.py --log logs/baseline.jsonl
   python demo/build_replay.py logs/transcripts.jsonl --baseline logs/baseline.jsonl [--heldout bench/results/heldout2_oss_s600.jsonl]
   ```
+  Each seller turn shows a **Why:** line: the seller's own reason trace (rule + numbers). The seller
+  keeps it in memory only (`Seller.trace`), never sends it to the buyer;
+  `python demo/why_trace.py logs/transcripts.jsonl` rebuilds `logs/why.jsonl` by replaying the log and
+  checks every replayed decision against it.
   Keys: Space play/pause, ←/→ step, F fullscreen, Esc back. Deep links: `#story=neg-009&step=end`,
   `#view=results`. Screenshots at 1920×1080: `demo/screenshots/`.
 - `tests/`: property tests and fuzzing. Run with `python -m unittest discover -s tests`.

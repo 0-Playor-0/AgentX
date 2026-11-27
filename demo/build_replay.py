@@ -25,6 +25,10 @@ sys.path.insert(0, str(ROOT))
 from harness import load_policy, load_store   # noqa: E402
 from seller.policy import Policy               # noqa: E402
 from seller.writer import name as item_name     # noqa: E402
+from seller.agent import Seller                 # noqa: E402
+
+sys.path.insert(0, str(ROOT / "demo"))
+from why_trace import replay                    # noqa: E402
 
 STORIES = [
     ("neg-009", "The Con Artist", "A manipulator bot tries fake authority, a fake SYSTEM update, a fake "
@@ -85,8 +89,10 @@ def line_note(it, basket, store):
     return None
 
 
-def story(r, store, P, title, teaser, why):
+def story(r, store, P, title, teaser, why, seller):
     msgs = r["transcript"]
+    # The seller's reason trace (log only), rebuilt by replaying this negotiation; replay checks every decision.
+    whys = {t["round"]: t["why"] for t in replay(r, seller)}
     # The seller's basket at each point: the items of its next offer (or its last one).
     baskets, cur = [None] * len(msgs), None
     for k in range(len(msgs) - 1, -1, -1):
@@ -137,6 +143,7 @@ def story(r, store, P, title, teaser, why):
                 prev_total = None
             v = m.get("violations") or []
             steps.append({"from": "seller", "type": m.get("type"), "round": m.get("round"), "text": m.get("text") or "",
+                          "why": whys.get(m.get("round"), ""),
                           "items": items, "total": total,
                           "deltaTotal": None if total is None or prev_total is None else total - prev_total,
                           "checks": {"policy": not any(x["kind"].startswith("policy:") for x in v),
@@ -213,7 +220,8 @@ def main():
     if base is None:
         print(f"warning: no baseline log at {args.baseline}; results card will show ours only")
     byid = {r["id"]: r for r in rows}
-    data = {"stories": [story(byid[i], store, P, t, te, w) for i, t, te, w in STORIES],
+    seller = Seller(store, policy)
+    data = {"stories": [story(byid[i], store, P, t, te, w, seller) for i, t, te, w in STORIES],
             "results": results(rows, base, args.heldout)}
     blob = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     html = (ROOT / "demo/template.html").read_text(encoding="utf-8").replace("__DATA__", blob)
