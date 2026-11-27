@@ -1,30 +1,27 @@
-# Abstract (draft)
+# Abstract
 
 **A seller agent that cannot be talked out of its policy**
 
-**Impact.** Shoppers are starting to send AI agents to buy for them. These buyers bargain tirelessly,
+**Impact.** Shoppers now send AI agents to buy for them. These buyers bargain tirelessly,
 invent competitor quotes and slip in "SYSTEM" or "store manager" instructions. A language-model seller
 can be argued below cost or make a false claim. Ours closes more profitable deals than the kit baseline
 and cannot break policy or say anything false, whatever the buyer writes.
 
 **Innovation.** The seller never reads the buyer's text. A deal is defined only by the structured
 items, so the seller negotiates on behaviour: what the buyer bids, and how those bids move. Injection,
-fake authority and invented quotes have nothing to act on. It is robust by construction, not by
-filtering.
+fake authority and invented quotes have nothing to act on.
 - **Pricing.** It uses one unit per basket, from the policy floor (0) to list price (1). One
   concession curve covers single items and bundles, with an equal discount on every line.
 - **Acceptance (AC_next).** It takes a bid once the bid is worth at least its own next offer.
 - **Round 10.** An expected-value rule on the buyer's projected bid chooses between a final offer and
-  walking away. This avoids deadlocks without giving up deals that can still close.
-- **Text.** It comes from fixed templates whose numbers come from the current offer. Each message is
-  checked with the competition's own truth checker and a policy check before it is sent, with a safe
-  fallback.
+  walking away. This avoids deadlocks without losing closable deals.
+- **Text.** Fixed templates, numbered from the current offer. Each message passes the competition's
+  truth checker and a policy check before sending, with a safe fallback.
 
 **Method.** We chose parameters for robustness, not peak score.
-- **Sweep.** On the three kit bots and seven adversarial rule-based buyers of our own, over 5 seeds,
-  we took the centre of the region where we beat the baseline on every group, not the single best
-  point.
-- **Fewer knobs.** Unused features were deleted, leaving four parameters.
+- **Sweep.** On the three kit bots and seven adversarial rule buyers of ours, over 5 seeds, we took
+  the centre of the region beating the baseline on every group, not the best point.
+- **Fewer knobs.** Four parameters remain.
 - **LLM buyers** only validated, never tuned.
 - **Held-out test.** A final test ran once, after freezing, on unseen buyer styles and a different
   model. An earlier version failed it by conceding too fast to LLM buyers, which led to AC_next.
@@ -37,11 +34,13 @@ filtering.
 - **Held-out LLM buyers** (gpt-oss-120b, 32 negotiations, 0 fallbacks): 57.5 vs 54.0, ahead on three
   of four personas, 0 violations, 0 deadlocks. It failed our own gate on llm_hard (−7.3, n = 8): one
   buyer walked away in round 6, the known early-walker limit. We shipped unchanged, as committed.
+- **Red team:** replaying every logged negotiation with all buyer text blanked changes 0 of 1,626
+  decisions.
 
-**Cost.** ₹0 inference: no model calls, GPU or network; about 0.15 ms per turn on one CPU core.
-Deterministic, so every negotiation can be replayed and audited.
+**Cost.** No model calls, GPU or network: 949 negotiations per second on one CPU core, about $0.013 per
+million negotiations. A GPT-5 mini seller would cost about $6,200 per million (2,000 input and 200
+output tokens per turn, list prices). Deterministic: every negotiation replays exactly.
 
-**Build.** About 530 lines of standard-library Python: guard, policy, buyer model, strategy, writer
-and self-check.
+**Build.** About 630 lines of standard-library Python, including a log-only reason trace.
 - **Tests:** 600 fuzzed negotiations through the official harness, and 1,500 negotiations of
   malformed JSON sent straight to the seller.
