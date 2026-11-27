@@ -33,7 +33,7 @@ fake authority and invented quotes have nothing to act on.
   round 4 (−3.2).
 - **Held-out LLM buyers** (gpt-oss-120b, 32 negotiations, 0 fallbacks): 57.5 vs 54.0, ahead on three
   of four personas, 0 violations, 0 deadlocks. It failed our own gate on llm_hard (−7.3, n = 8): one
-  buyer walked away in round 6, the known early-walker limit. We shipped unchanged, as committed.
+  buyer walked away in round 6, the known early-walker limit. No parameters were retuned.
 - **Red team:** replaying every logged negotiation with all buyer text blanked changes 0 of 1,626
   decisions.
 
